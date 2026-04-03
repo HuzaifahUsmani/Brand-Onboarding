@@ -1033,71 +1033,95 @@
  
             if (!selectedBrandCore) return null;
  
-            // Curated color palettes
+            // Curated color palettes (6 colors each)
             const colorPalettes = [
                 {
                     id: 'patriot-classic',
                     name: 'Patriot Classic',
-                    description: 'Traditional red, white, and blue',
-                    primary: '#a61e22',
-                    secondary: '#1e3a8a',
-                    accent: '#f9f8f6'
+                    description: 'Traditional red, white, and blue Americana',
+                    primary: '#a61e22',      // Patriot Red
+                    secondary: '#1e3a8a',    // Deep Blue
+                    tertiary: '#991b1b',     // Dark Red
+                    accent: '#dc2626',       // Bright Red
+                    neutralDark: '#1f2937',  // Charcoal
+                    neutralLight: '#f9fafb'  // Off-white
                 },
                 {
                     id: 'modern-conservative',
                     name: 'Modern Conservative',
-                    description: 'Deep navy with crimson accents',
-                    primary: '#1e40af',
-                    secondary: '#991b1b',
-                    accent: '#e5e7eb'
+                    description: 'Sophisticated navy with bold crimson',
+                    primary: '#1e40af',      // Royal Blue
+                    secondary: '#991b1b',    // Crimson
+                    tertiary: '#1e3a8a',     // Navy
+                    accent: '#ef4444',       // Red Accent
+                    neutralDark: '#0f172a',  // Slate Black
+                    neutralLight: '#f1f5f9'  // Light Gray
                 },
                 {
                     id: 'bold-reformer',
                     name: 'Bold Reformer',
-                    description: 'Energetic orange and slate',
-                    primary: '#ea580c',
-                    secondary: '#1e293b',
-                    accent: '#f1f5f9'
+                    description: 'Energetic orange with industrial slate',
+                    primary: '#ea580c',      // Bold Orange
+                    secondary: '#1e293b',    // Slate
+                    tertiary: '#c2410c',     // Dark Orange
+                    accent: '#f97316',       // Bright Orange
+                    neutralDark: '#0f172a',  // Deep Slate
+                    neutralLight: '#f8fafc'  // Ice White
                 },
                 {
                     id: 'heritage-gold',
                     name: 'Heritage Gold',
-                    description: 'Dignified burgundy and gold',
-                    primary: '#7c2d12',
-                    secondary: '#ca8a04',
-                    accent: '#fef3c7'
+                    description: 'Dignified burgundy with rich gold',
+                    primary: '#7c2d12',      // Burgundy
+                    secondary: '#ca8a04',    // Gold
+                    tertiary: '#92400e',     // Brown
+                    accent: '#eab308',       // Bright Gold
+                    neutralDark: '#1c1917',  // Stone Black
+                    neutralLight: '#fef3c7'  // Cream
                 },
                 {
                     id: 'grassroots-green',
                     name: 'Grassroots Green',
-                    description: 'Approachable forest green',
-                    primary: '#15803d',
-                    secondary: '#1e3a8a',
-                    accent: '#f0fdf4'
+                    description: 'Trustworthy forest green with earth tones',
+                    primary: '#15803d',      // Forest Green
+                    secondary: '#1e3a8a',    // Navy Blue
+                    tertiary: '#166534',     // Deep Green
+                    accent: '#22c55e',       // Bright Green
+                    neutralDark: '#1f2937',  // Charcoal
+                    neutralLight: '#f0fdf4'  // Mint Cream
                 },
                 {
                     id: 'executive-slate',
                     name: 'Executive Slate',
-                    description: 'Professional charcoal and steel',
-                    primary: '#1e293b',
-                    secondary: '#475569',
-                    accent: '#f8fafc'
+                    description: 'Professional charcoal with steel accents',
+                    primary: '#1e293b',      // Charcoal
+                    secondary: '#475569',    // Steel Gray
+                    tertiary: '#334155',     // Slate
+                    accent: '#3b82f6',       // Blue Accent
+                    neutralDark: '#0f172a',  // Almost Black
+                    neutralLight: '#f8fafc'  // Near White
                 },
                 {
                     id: 'liberty-purple',
                     name: 'Liberty Purple',
-                    description: 'Distinctive royal purple',
-                    primary: '#6b21a8',
-                    secondary: '#1e3a8a',
-                    accent: '#faf5ff'
+                    description: 'Distinctive royal purple with gold',
+                    primary: '#6b21a8',      // Royal Purple
+                    secondary: '#1e3a8a',    // Navy
+                    tertiary: '#581c87',     // Deep Purple
+                    accent: '#a855f7',       // Bright Purple
+                    neutralDark: '#1e1b4b',  // Indigo Black
+                    neutralLight: '#faf5ff'  // Lavender White
                 },
                 {
                     id: 'frontier-bronze',
                     name: 'Frontier Bronze',
-                    description: 'Rustic bronze and earth tones',
-                    primary: '#92400e',
-                    secondary: '#365314',
-                    accent: '#fef9c3'
+                    description: 'Rustic bronze with natural earth tones',
+                    primary: '#92400e',      // Bronze
+                    secondary: '#365314',    // Olive Green
+                    tertiary: '#78350f',     // Dark Bronze
+                    accent: '#d97706',       // Amber
+                    neutralDark: '#1c1917',  // Stone Black
+                    neutralLight: '#fef9c3'  // Sand
                 }
             ];
  
@@ -1118,8 +1142,11 @@
             const getRecommendedColors = () => {
                 return {
                     primary: selectedBrandCore.color,
-                    secondary: '#000000',
-                    accent: '#f9f8f6'
+                    secondary: '#1e3a8a',    // Navy Blue
+                    tertiary: '#991b1b',     // Deep Red
+                    accent: '#dc2626',       // Bright Red
+                    neutralDark: '#000000',  // Black
+                    neutralLight: '#f9f8f6'  // Off-white
                 };
             };
  
@@ -1168,16 +1195,55 @@
                                     </div>
                                 )}
                             </div>
-                            <div className="flex gap-4">
-                                {Object.values(getRecommendedColors()).map((color, idx) => (
-                                    <div key={idx} className="flex-1">
-                                        <div 
-                                            className="h-24 rounded-lg border-2 border-gray-200 mb-2"
-                                            style={{ backgroundColor: color }}
-                                        ></div>
-                                        <div className="text-center text-sm font-mono text-gray-600">{color}</div>
-                                    </div>
-                                ))}
+                            <div className="grid grid-cols-3 md:grid-cols-6 gap-3">
+                                <div>
+                                    <div 
+                                        className="h-20 rounded-lg border-2 border-gray-200 mb-2"
+                                        style={{ backgroundColor: getRecommendedColors().primary }}
+                                    ></div>
+                                    <div className="text-center text-xs font-semibold text-gray-700 mb-1">Primary</div>
+                                    <div className="text-center text-xs font-mono text-gray-500">{getRecommendedColors().primary}</div>
+                                </div>
+                                <div>
+                                    <div 
+                                        className="h-20 rounded-lg border-2 border-gray-200 mb-2"
+                                        style={{ backgroundColor: getRecommendedColors().secondary }}
+                                    ></div>
+                                    <div className="text-center text-xs font-semibold text-gray-700 mb-1">Secondary</div>
+                                    <div className="text-center text-xs font-mono text-gray-500">{getRecommendedColors().secondary}</div>
+                                </div>
+                                <div>
+                                    <div 
+                                        className="h-20 rounded-lg border-2 border-gray-200 mb-2"
+                                        style={{ backgroundColor: getRecommendedColors().tertiary }}
+                                    ></div>
+                                    <div className="text-center text-xs font-semibold text-gray-700 mb-1">Tertiary</div>
+                                    <div className="text-center text-xs font-mono text-gray-500">{getRecommendedColors().tertiary}</div>
+                                </div>
+                                <div>
+                                    <div 
+                                        className="h-20 rounded-lg border-2 border-gray-200 mb-2"
+                                        style={{ backgroundColor: getRecommendedColors().accent }}
+                                    ></div>
+                                    <div className="text-center text-xs font-semibold text-gray-700 mb-1">Accent</div>
+                                    <div className="text-center text-xs font-mono text-gray-500">{getRecommendedColors().accent}</div>
+                                </div>
+                                <div>
+                                    <div 
+                                        className="h-20 rounded-lg border-2 border-gray-200 mb-2"
+                                        style={{ backgroundColor: getRecommendedColors().neutralDark }}
+                                    ></div>
+                                    <div className="text-center text-xs font-semibold text-gray-700 mb-1">Dark</div>
+                                    <div className="text-center text-xs font-mono text-gray-500">{getRecommendedColors().neutralDark}</div>
+                                </div>
+                                <div>
+                                    <div 
+                                        className="h-20 rounded-lg border-2 border-gray-200 mb-2"
+                                        style={{ backgroundColor: getRecommendedColors().neutralLight }}
+                                    ></div>
+                                    <div className="text-center text-xs font-semibold text-gray-700 mb-1">Light</div>
+                                    <div className="text-center text-xs font-mono text-gray-500">{getRecommendedColors().neutralLight}</div>
+                                </div>
                             </div>
                         </div>
  
@@ -1210,18 +1276,30 @@
                                     style={{ animationDelay: `${idx * 0.05}s` }}
                                 >
                                     {/* Color Swatches */}
-                                    <div className="grid grid-cols-3">
+                                    <div className="grid grid-cols-3 gap-0">
                                         <div 
-                                            className="h-32"
+                                            className="h-20"
                                             style={{ backgroundColor: palette.primary }}
                                         ></div>
                                         <div 
-                                            className="h-32"
+                                            className="h-20"
                                             style={{ backgroundColor: palette.secondary }}
                                         ></div>
                                         <div 
-                                            className="h-32"
+                                            className="h-20"
+                                            style={{ backgroundColor: palette.tertiary }}
+                                        ></div>
+                                        <div 
+                                            className="h-20"
                                             style={{ backgroundColor: palette.accent }}
+                                        ></div>
+                                        <div 
+                                            className="h-20"
+                                            style={{ backgroundColor: palette.neutralDark }}
+                                        ></div>
+                                        <div 
+                                            className="h-20"
+                                            style={{ backgroundColor: palette.neutralLight }}
                                         ></div>
                                     </div>
  
@@ -1241,8 +1319,20 @@
                                                 <span className="font-mono text-gray-700">{palette.secondary}</span>
                                             </div>
                                             <div className="flex items-center justify-between text-xs">
+                                                <span className="text-gray-500">Tertiary:</span>
+                                                <span className="font-mono text-gray-700">{palette.tertiary}</span>
+                                            </div>
+                                            <div className="flex items-center justify-between text-xs">
                                                 <span className="text-gray-500">Accent:</span>
                                                 <span className="font-mono text-gray-700">{palette.accent}</span>
+                                            </div>
+                                            <div className="flex items-center justify-between text-xs">
+                                                <span className="text-gray-500">Dark:</span>
+                                                <span className="font-mono text-gray-700">{palette.neutralDark}</span>
+                                            </div>
+                                            <div className="flex items-center justify-between text-xs">
+                                                <span className="text-gray-500">Light:</span>
+                                                <span className="font-mono text-gray-700">{palette.neutralLight}</span>
                                             </div>
                                         </div>
  
@@ -1298,8 +1388,11 @@
                 if (formData.useRecommended || !formData.colorPalette) {
                     return {
                         primary: selectedBrandCore.color,
-                        secondary: '#000000',
-                        accent: '#f9f8f6'
+                        secondary: '#1e3a8a',
+                        tertiary: '#991b1b',
+                        accent: '#dc2626',
+                        neutralDark: '#000000',
+                        neutralLight: '#f9f8f6'
                     };
                 }
                 return formData.colorPalette;
@@ -1325,35 +1418,65 @@
                             <h3 className="text-2xl font-bold mb-6" style={{ fontFamily: selectedBrandCore.fontPrimary }}>
                                 Brand Colors
                             </h3>
-                            <div className="grid grid-cols-3 gap-6">
+                            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
                                 <div>
                                     <div 
-                                        className="h-32 rounded-lg mb-3 border-2 border-gray-200"
+                                        className="h-24 rounded-lg mb-3 border-2 border-gray-200"
                                         style={{ backgroundColor: colors.primary }}
                                     ></div>
                                     <div className="text-center">
-                                        <div className="font-bold">Primary</div>
-                                        <div className="text-sm text-gray-600">{colors.primary}</div>
+                                        <div className="font-bold text-sm">Primary</div>
+                                        <div className="text-xs text-gray-600 font-mono">{colors.primary}</div>
                                     </div>
                                 </div>
                                 <div>
                                     <div 
-                                        className="h-32 rounded-lg mb-3 border-2 border-gray-200"
+                                        className="h-24 rounded-lg mb-3 border-2 border-gray-200"
                                         style={{ backgroundColor: colors.secondary }}
                                     ></div>
                                     <div className="text-center">
-                                        <div className="font-bold">Secondary</div>
-                                        <div className="text-sm text-gray-600">{colors.secondary}</div>
+                                        <div className="font-bold text-sm">Secondary</div>
+                                        <div className="text-xs text-gray-600 font-mono">{colors.secondary}</div>
                                     </div>
                                 </div>
                                 <div>
                                     <div 
-                                        className="h-32 rounded-lg mb-3 border-2 border-gray-200"
+                                        className="h-24 rounded-lg mb-3 border-2 border-gray-200"
+                                        style={{ backgroundColor: colors.tertiary }}
+                                    ></div>
+                                    <div className="text-center">
+                                        <div className="font-bold text-sm">Tertiary</div>
+                                        <div className="text-xs text-gray-600 font-mono">{colors.tertiary}</div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div 
+                                        className="h-24 rounded-lg mb-3 border-2 border-gray-200"
                                         style={{ backgroundColor: colors.accent }}
                                     ></div>
                                     <div className="text-center">
-                                        <div className="font-bold">Accent</div>
-                                        <div className="text-sm text-gray-600">{colors.accent}</div>
+                                        <div className="font-bold text-sm">Accent</div>
+                                        <div className="text-xs text-gray-600 font-mono">{colors.accent}</div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div 
+                                        className="h-24 rounded-lg mb-3 border-2 border-gray-200"
+                                        style={{ backgroundColor: colors.neutralDark }}
+                                    ></div>
+                                    <div className="text-center">
+                                        <div className="font-bold text-sm">Neutral Dark</div>
+                                        <div className="text-xs text-gray-600 font-mono">{colors.neutralDark}</div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div 
+                                        className="h-24 rounded-lg mb-3 border-2 border-gray-200"
+                                        style={{ backgroundColor: colors.neutralLight }}
+                                    ></div>
+                                    <div className="text-center">
+                                        <div className="font-bold text-sm">Neutral Light</div>
+                                        <div className="text-xs text-gray-600 font-mono">{colors.neutralLight}</div>
                                     </div>
                                 </div>
                             </div>
