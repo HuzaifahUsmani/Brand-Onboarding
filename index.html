@@ -133,32 +133,6 @@
                 radial-gradient(circle at 20% 30%, rgba(166, 30, 34, 0.05) 0%, transparent 50%),
                 radial-gradient(circle at 80% 70%, rgba(166, 30, 34, 0.05) 0%, transparent 50%);
         }
- 
-        @media print {
-            body {
-                background: white;
-            }
-            
-            .no-print {
-                display: none !important;
-            }
-            
-            .print-only {
-                display: block !important;
-            }
-            
-            .page-break {
-                page-break-after: always;
-            }
-            
-            @page {
-                margin: 1cm;
-            }
-        }
-        
-        .print-only {
-            display: none;
-        }
     </style>
 </head>
 <body>
@@ -321,16 +295,12 @@
                 subDirection: '',
                 
                 // Stage 5
-                colorPalette: null, // Will store { primary, secondary, accent }
-                useRecommended: true,
-                
-                // Stage 6
                 visualApproved: false,
                 
-                // Stage 7
+                // Stage 6
                 websiteCopy: {},
                 
-                // Stage 8
+                // Stage 7
                 collateralPriorities: {}
             });
  
@@ -339,7 +309,7 @@
             };
  
             const nextStage = () => {
-                if (currentStage < 9) {
+                if (currentStage < 8) {
                     setCurrentStage(prev => prev + 1);
                     window.scrollTo({ top: 0, behavior: 'smooth' });
                 }
@@ -362,8 +332,6 @@
                         return formData.brandCore !== '';
                     case 4:
                         return formData.subDirection !== '';
-                    case 5:
-                        return formData.useRecommended || formData.colorPalette !== null;
                     default:
                         return true;
                 }
@@ -383,8 +351,7 @@
                         {currentStage === 5 && <Stage5 formData={formData} updateFormData={updateFormData} nextStage={nextStage} prevStage={prevStage} />}
                         {currentStage === 6 && <Stage6 formData={formData} updateFormData={updateFormData} nextStage={nextStage} prevStage={prevStage} />}
                         {currentStage === 7 && <Stage7 formData={formData} updateFormData={updateFormData} nextStage={nextStage} prevStage={prevStage} />}
-                        {currentStage === 8 && <Stage8 formData={formData} updateFormData={updateFormData} nextStage={nextStage} prevStage={prevStage} />}
-                        {currentStage === 9 && <Stage9 formData={formData} prevStage={prevStage} />}
+                        {currentStage === 8 && <Stage8 formData={formData} prevStage={prevStage} />}
                     </div>
                 </div>
             );
@@ -397,11 +364,10 @@
                 { num: 2, name: 'Profile' },
                 { num: 3, name: 'Brand Core' },
                 { num: 4, name: 'Direction' },
-                { num: 5, name: 'Colors' },
-                { num: 6, name: 'Typography' },
-                { num: 7, name: 'Copy' },
-                { num: 8, name: 'Collateral' },
-                { num: 9, name: 'Review' }
+                { num: 5, name: 'Visual' },
+                { num: 6, name: 'Copy' },
+                { num: 7, name: 'Collateral' },
+                { num: 8, name: 'Review' }
             ];
  
             return (
@@ -453,7 +419,7 @@
  
                             {/* Mobile Progress */}
                             <div className="md:hidden text-white text-sm">
-                                Step {currentStage} of 9
+                                Step {currentStage} of 8
                             </div>
                         </div>
                     </div>
@@ -1051,389 +1017,22 @@
             );
         }
  
-        // Stage 5: Color Palette Selection
+        // Stage 5: Visual Identity Preview
         function Stage5({ formData, updateFormData, nextStage, prevStage }) {
-            const selectedBrandCore = BRAND_CORES[formData.brandCore];
-            const [selectedPalette, setSelectedPalette] = useState(formData.colorPalette);
-            const [useRecommended, setUseRecommended] = useState(formData.useRecommended);
- 
-            if (!selectedBrandCore) return null;
- 
-            // Curated color palettes (6 colors each)
-            const colorPalettes = [
-                {
-                    id: 'patriot-classic',
-                    name: 'Patriot Classic',
-                    description: 'Traditional red, white, and blue Americana',
-                    primary: '#a61e22',      // Patriot Red
-                    secondary: '#1e3a8a',    // Deep Blue
-                    tertiary: '#991b1b',     // Dark Red
-                    accent: '#dc2626',       // Bright Red
-                    neutralDark: '#1f2937',  // Charcoal
-                    neutralLight: '#f9fafb'  // Off-white
-                },
-                {
-                    id: 'modern-conservative',
-                    name: 'Modern Conservative',
-                    description: 'Sophisticated navy with bold crimson',
-                    primary: '#1e40af',      // Royal Blue
-                    secondary: '#991b1b',    // Crimson
-                    tertiary: '#1e3a8a',     // Navy
-                    accent: '#ef4444',       // Red Accent
-                    neutralDark: '#0f172a',  // Slate Black
-                    neutralLight: '#f1f5f9'  // Light Gray
-                },
-                {
-                    id: 'bold-reformer',
-                    name: 'Bold Reformer',
-                    description: 'Energetic orange with industrial slate',
-                    primary: '#ea580c',      // Bold Orange
-                    secondary: '#1e293b',    // Slate
-                    tertiary: '#c2410c',     // Dark Orange
-                    accent: '#f97316',       // Bright Orange
-                    neutralDark: '#0f172a',  // Deep Slate
-                    neutralLight: '#f8fafc'  // Ice White
-                },
-                {
-                    id: 'heritage-gold',
-                    name: 'Heritage Gold',
-                    description: 'Dignified burgundy with rich gold',
-                    primary: '#7c2d12',      // Burgundy
-                    secondary: '#ca8a04',    // Gold
-                    tertiary: '#92400e',     // Brown
-                    accent: '#eab308',       // Bright Gold
-                    neutralDark: '#1c1917',  // Stone Black
-                    neutralLight: '#fef3c7'  // Cream
-                },
-                {
-                    id: 'grassroots-green',
-                    name: 'Grassroots Green',
-                    description: 'Trustworthy forest green with earth tones',
-                    primary: '#15803d',      // Forest Green
-                    secondary: '#1e3a8a',    // Navy Blue
-                    tertiary: '#166534',     // Deep Green
-                    accent: '#22c55e',       // Bright Green
-                    neutralDark: '#1f2937',  // Charcoal
-                    neutralLight: '#f0fdf4'  // Mint Cream
-                },
-                {
-                    id: 'executive-slate',
-                    name: 'Executive Slate',
-                    description: 'Professional charcoal with steel accents',
-                    primary: '#1e293b',      // Charcoal
-                    secondary: '#475569',    // Steel Gray
-                    tertiary: '#334155',     // Slate
-                    accent: '#3b82f6',       // Blue Accent
-                    neutralDark: '#0f172a',  // Almost Black
-                    neutralLight: '#f8fafc'  // Near White
-                },
-                {
-                    id: 'liberty-purple',
-                    name: 'Liberty Purple',
-                    description: 'Distinctive royal purple with gold',
-                    primary: '#6b21a8',      // Royal Purple
-                    secondary: '#1e3a8a',    // Navy
-                    tertiary: '#581c87',     // Deep Purple
-                    accent: '#a855f7',       // Bright Purple
-                    neutralDark: '#1e1b4b',  // Indigo Black
-                    neutralLight: '#faf5ff'  // Lavender White
-                },
-                {
-                    id: 'frontier-bronze',
-                    name: 'Frontier Bronze',
-                    description: 'Rustic bronze with natural earth tones',
-                    primary: '#92400e',      // Bronze
-                    secondary: '#365314',    // Olive Green
-                    tertiary: '#78350f',     // Dark Bronze
-                    accent: '#d97706',       // Amber
-                    neutralDark: '#1c1917',  // Stone Black
-                    neutralLight: '#fef9c3'  // Sand
-                }
-            ];
- 
-            const handlePaletteSelect = (palette) => {
-                setSelectedPalette(palette);
-                setUseRecommended(false);
-                updateFormData('colorPalette', palette);
-                updateFormData('useRecommended', false);
-            };
- 
-            const handleUseRecommended = () => {
-                setUseRecommended(true);
-                setSelectedPalette(null);
-                updateFormData('useRecommended', true);
-                updateFormData('colorPalette', null);
-            };
- 
-            const getRecommendedColors = () => {
-                return {
-                    primary: selectedBrandCore.color,
-                    secondary: '#1e3a8a',    // Navy Blue
-                    tertiary: '#991b1b',     // Deep Red
-                    accent: '#dc2626',       // Bright Red
-                    neutralDark: '#000000',  // Black
-                    neutralLight: '#f9f8f6'  // Off-white
-                };
-            };
- 
-            return (
-                <div className="space-y-12 fade-in-up">
-                    <div className="text-center space-y-4">
-                        <div className="inline-block px-6 py-2 rounded-full text-white text-sm font-bold mb-4" 
-                             style={{ backgroundColor: selectedBrandCore.color }}>
-                            {selectedBrandCore.name} Brand
-                        </div>
-                        <h2 className="text-5xl font-bold text-black" style={{ fontFamily: 'Bebas Neue' }}>
-                            CHOOSE YOUR <span className="text-[#a61e22]">COLOR PALETTE</span>
-                        </h2>
-                        <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-                            Select colors that will define your campaign's visual identity, or use our recommended palette based on your brand core.
-                        </p>
-                    </div>
- 
-                    <div className="max-w-6xl mx-auto space-y-8">
-                        {/* Recommended Option */}
-                        <div 
-                            onClick={(e) => {
-                                e.preventDefault();
-                                handleUseRecommended();
-                            }}
-                            className={`p-8 rounded-2xl cursor-pointer transition-all border-2 ${
-                                useRecommended
-                                    ? 'border-[#a61e22] bg-white ring-4 ring-[#a61e22] ring-opacity-20'
-                                    : 'border-gray-300 bg-white hover:border-[#a61e22]'
-                            }`}
-                        >
-                            <div className="flex items-center justify-between mb-6">
-                                <div>
-                                    <h3 className="text-2xl font-bold text-gray-900 mb-2">
-                                        ⭐ Use Recommended Colors
-                                    </h3>
-                                    <p className="text-gray-600">
-                                        We'll select the perfect colors based on your {selectedBrandCore.name} brand identity
-                                    </p>
-                                </div>
-                                {useRecommended && (
-                                    <div className="w-8 h-8 bg-[#a61e22] rounded-full flex items-center justify-center flex-shrink-0">
-                                        <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
-                                            <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                                        </svg>
-                                    </div>
-                                )}
-                            </div>
-                            <div className="grid grid-cols-3 md:grid-cols-6 gap-3">
-                                <div>
-                                    <div 
-                                        className="h-20 rounded-lg border-2 border-gray-200 mb-2"
-                                        style={{ backgroundColor: getRecommendedColors().primary }}
-                                    ></div>
-                                    <div className="text-center text-xs font-semibold text-gray-700 mb-1">Primary</div>
-                                    <div className="text-center text-xs font-mono text-gray-500">{getRecommendedColors().primary}</div>
-                                </div>
-                                <div>
-                                    <div 
-                                        className="h-20 rounded-lg border-2 border-gray-200 mb-2"
-                                        style={{ backgroundColor: getRecommendedColors().secondary }}
-                                    ></div>
-                                    <div className="text-center text-xs font-semibold text-gray-700 mb-1">Secondary</div>
-                                    <div className="text-center text-xs font-mono text-gray-500">{getRecommendedColors().secondary}</div>
-                                </div>
-                                <div>
-                                    <div 
-                                        className="h-20 rounded-lg border-2 border-gray-200 mb-2"
-                                        style={{ backgroundColor: getRecommendedColors().tertiary }}
-                                    ></div>
-                                    <div className="text-center text-xs font-semibold text-gray-700 mb-1">Tertiary</div>
-                                    <div className="text-center text-xs font-mono text-gray-500">{getRecommendedColors().tertiary}</div>
-                                </div>
-                                <div>
-                                    <div 
-                                        className="h-20 rounded-lg border-2 border-gray-200 mb-2"
-                                        style={{ backgroundColor: getRecommendedColors().accent }}
-                                    ></div>
-                                    <div className="text-center text-xs font-semibold text-gray-700 mb-1">Accent</div>
-                                    <div className="text-center text-xs font-mono text-gray-500">{getRecommendedColors().accent}</div>
-                                </div>
-                                <div>
-                                    <div 
-                                        className="h-20 rounded-lg border-2 border-gray-200 mb-2"
-                                        style={{ backgroundColor: getRecommendedColors().neutralDark }}
-                                    ></div>
-                                    <div className="text-center text-xs font-semibold text-gray-700 mb-1">Dark</div>
-                                    <div className="text-center text-xs font-mono text-gray-500">{getRecommendedColors().neutralDark}</div>
-                                </div>
-                                <div>
-                                    <div 
-                                        className="h-20 rounded-lg border-2 border-gray-200 mb-2"
-                                        style={{ backgroundColor: getRecommendedColors().neutralLight }}
-                                    ></div>
-                                    <div className="text-center text-xs font-semibold text-gray-700 mb-1">Light</div>
-                                    <div className="text-center text-xs font-mono text-gray-500">{getRecommendedColors().neutralLight}</div>
-                                </div>
-                            </div>
-                        </div>
- 
-                        {/* Divider */}
-                        <div className="relative">
-                            <div className="absolute inset-0 flex items-center">
-                                <div className="w-full border-t-2 border-gray-200"></div>
-                            </div>
-                            <div className="relative flex justify-center">
-                                <span className="bg-[#f9f8f6] px-6 text-lg font-semibold text-gray-500">
-                                    OR CHOOSE A CUSTOM PALETTE
-                                </span>
-                            </div>
-                        </div>
- 
-                        {/* Color Palette Grid */}
-                        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-                            {colorPalettes.map((palette, idx) => (
-                                <div
-                                    key={palette.id}
-                                    onClick={(e) => {
-                                        e.preventDefault();
-                                        handlePaletteSelect(palette);
-                                    }}
-                                    className={`cursor-pointer rounded-xl overflow-hidden transition-all card-hover ${
-                                        selectedPalette?.id === palette.id && !useRecommended
-                                            ? 'ring-4 ring-[#a61e22] transform scale-105'
-                                            : 'border-2 border-gray-200'
-                                    }`}
-                                    style={{ animationDelay: `${idx * 0.05}s` }}
-                                >
-                                    {/* Color Swatches */}
-                                    <div className="grid grid-cols-3 gap-0">
-                                        <div 
-                                            className="h-20"
-                                            style={{ backgroundColor: palette.primary }}
-                                        ></div>
-                                        <div 
-                                            className="h-20"
-                                            style={{ backgroundColor: palette.secondary }}
-                                        ></div>
-                                        <div 
-                                            className="h-20"
-                                            style={{ backgroundColor: palette.tertiary }}
-                                        ></div>
-                                        <div 
-                                            className="h-20"
-                                            style={{ backgroundColor: palette.accent }}
-                                        ></div>
-                                        <div 
-                                            className="h-20"
-                                            style={{ backgroundColor: palette.neutralDark }}
-                                        ></div>
-                                        <div 
-                                            className="h-20"
-                                            style={{ backgroundColor: palette.neutralLight }}
-                                        ></div>
-                                    </div>
- 
-                                    {/* Palette Info */}
-                                    <div className="p-4 bg-white">
-                                        <h4 className="font-bold text-gray-900 mb-1">{palette.name}</h4>
-                                        <p className="text-sm text-gray-600 mb-3">{palette.description}</p>
-                                        
-                                        {/* Hex Codes */}
-                                        <div className="space-y-1">
-                                            <div className="flex items-center justify-between text-xs">
-                                                <span className="text-gray-500">Primary:</span>
-                                                <span className="font-mono text-gray-700">{palette.primary}</span>
-                                            </div>
-                                            <div className="flex items-center justify-between text-xs">
-                                                <span className="text-gray-500">Secondary:</span>
-                                                <span className="font-mono text-gray-700">{palette.secondary}</span>
-                                            </div>
-                                            <div className="flex items-center justify-between text-xs">
-                                                <span className="text-gray-500">Tertiary:</span>
-                                                <span className="font-mono text-gray-700">{palette.tertiary}</span>
-                                            </div>
-                                            <div className="flex items-center justify-between text-xs">
-                                                <span className="text-gray-500">Accent:</span>
-                                                <span className="font-mono text-gray-700">{palette.accent}</span>
-                                            </div>
-                                            <div className="flex items-center justify-between text-xs">
-                                                <span className="text-gray-500">Dark:</span>
-                                                <span className="font-mono text-gray-700">{palette.neutralDark}</span>
-                                            </div>
-                                            <div className="flex items-center justify-between text-xs">
-                                                <span className="text-gray-500">Light:</span>
-                                                <span className="font-mono text-gray-700">{palette.neutralLight}</span>
-                                            </div>
-                                        </div>
- 
-                                        {selectedPalette?.id === palette.id && !useRecommended && (
-                                            <div className="mt-3 flex items-center text-[#a61e22] text-sm font-semibold">
-                                                <svg className="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
-                                                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                                                </svg>
-                                                Selected
-                                            </div>
-                                        )}
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
- 
-                    {/* Navigation */}
-                    <div className="flex justify-between max-w-6xl mx-auto pt-8">
-                        <button
-                            type="button"
-                            onClick={(e) => {
-                                e.preventDefault();
-                                prevStage();
-                            }}
-                            className="px-8 py-4 rounded-lg font-bold text-lg border-2 border-gray-300 text-gray-700 hover:border-[#a61e22] hover:text-[#a61e22] transition-all"
-                        >
-                            ← Back
-                        </button>
-                        <button
-                            type="button"
-                            onClick={(e) => {
-                                e.preventDefault();
-                                nextStage();
-                            }}
-                            className="px-8 py-4 rounded-lg font-bold text-lg bg-[#a61e22] text-white hover:bg-[#8a1a1d] shadow-lg transition-all"
-                        >
-                            Continue to Colors & Typography →
-                        </button>
-                    </div>
-                </div>
-            );
-        }
- 
-        // Stage 6: Visual Identity Preview (formerly Stage 5)
-        function Stage6({ formData, updateFormData, nextStage, prevStage }) {
             const selectedBrandCore = BRAND_CORES[formData.brandCore];
             
             if (!selectedBrandCore) return null;
  
-            // Get the color palette to display
-            const getColors = () => {
-                if (formData.useRecommended || !formData.colorPalette) {
-                    return {
-                        primary: selectedBrandCore.color,
-                        secondary: '#1e3a8a',
-                        tertiary: '#991b1b',
-                        accent: '#dc2626',
-                        neutralDark: '#000000',
-                        neutralLight: '#f9f8f6'
-                    };
-                }
-                return formData.colorPalette;
-            };
- 
-            const colors = getColors();
+            const logoTypes = ['Wordmark', 'Badge/Emblem', 'Symbol+Text', 'Monogram', 'Campaign Sign'];
  
             return (
                 <div className="space-y-12 fade-in-up">
                     <div className="text-center space-y-4">
                         <h2 className="text-5xl font-bold text-black" style={{ fontFamily: 'Bebas Neue' }}>
-                            COLORS & <span className="text-[#a61e22]">TYPOGRAPHY</span>
+                            YOUR <span className="text-[#a61e22]">VISUAL IDENTITY</span>
                         </h2>
                         <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-                            Your brand's visual foundation: the colors and fonts that will define your campaign.
+                            Here's how your brand comes to life visually. This is your identity.
                         </p>
                     </div>
  
@@ -1443,65 +1042,29 @@
                             <h3 className="text-2xl font-bold mb-6" style={{ fontFamily: selectedBrandCore.fontPrimary }}>
                                 Brand Colors
                             </h3>
-                            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+                            <div className="grid grid-cols-3 gap-6">
                                 <div>
                                     <div 
-                                        className="h-24 rounded-lg mb-3 border-2 border-gray-200"
-                                        style={{ backgroundColor: colors.primary }}
+                                        className="h-32 rounded-lg mb-3 border-2 border-gray-200"
+                                        style={{ backgroundColor: selectedBrandCore.color }}
                                     ></div>
                                     <div className="text-center">
-                                        <div className="font-bold text-sm">Primary</div>
-                                        <div className="text-xs text-gray-600 font-mono">{colors.primary}</div>
+                                        <div className="font-bold">Primary</div>
+                                        <div className="text-sm text-gray-600">{selectedBrandCore.color}</div>
                                     </div>
                                 </div>
                                 <div>
-                                    <div 
-                                        className="h-24 rounded-lg mb-3 border-2 border-gray-200"
-                                        style={{ backgroundColor: colors.secondary }}
-                                    ></div>
+                                    <div className="h-32 rounded-lg mb-3 bg-black border-2 border-gray-200"></div>
                                     <div className="text-center">
-                                        <div className="font-bold text-sm">Secondary</div>
-                                        <div className="text-xs text-gray-600 font-mono">{colors.secondary}</div>
+                                        <div className="font-bold">Secondary</div>
+                                        <div className="text-sm text-gray-600">#000000</div>
                                     </div>
                                 </div>
                                 <div>
-                                    <div 
-                                        className="h-24 rounded-lg mb-3 border-2 border-gray-200"
-                                        style={{ backgroundColor: colors.tertiary }}
-                                    ></div>
+                                    <div className="h-32 rounded-lg mb-3 bg-[#f9f8f6] border-2 border-gray-200"></div>
                                     <div className="text-center">
-                                        <div className="font-bold text-sm">Tertiary</div>
-                                        <div className="text-xs text-gray-600 font-mono">{colors.tertiary}</div>
-                                    </div>
-                                </div>
-                                <div>
-                                    <div 
-                                        className="h-24 rounded-lg mb-3 border-2 border-gray-200"
-                                        style={{ backgroundColor: colors.accent }}
-                                    ></div>
-                                    <div className="text-center">
-                                        <div className="font-bold text-sm">Accent</div>
-                                        <div className="text-xs text-gray-600 font-mono">{colors.accent}</div>
-                                    </div>
-                                </div>
-                                <div>
-                                    <div 
-                                        className="h-24 rounded-lg mb-3 border-2 border-gray-200"
-                                        style={{ backgroundColor: colors.neutralDark }}
-                                    ></div>
-                                    <div className="text-center">
-                                        <div className="font-bold text-sm">Neutral Dark</div>
-                                        <div className="text-xs text-gray-600 font-mono">{colors.neutralDark}</div>
-                                    </div>
-                                </div>
-                                <div>
-                                    <div 
-                                        className="h-24 rounded-lg mb-3 border-2 border-gray-200"
-                                        style={{ backgroundColor: colors.neutralLight }}
-                                    ></div>
-                                    <div className="text-center">
-                                        <div className="font-bold text-sm">Neutral Light</div>
-                                        <div className="text-xs text-gray-600 font-mono">{colors.neutralLight}</div>
+                                        <div className="font-bold">Accent</div>
+                                        <div className="text-sm text-gray-600">#f9f8f6</div>
                                     </div>
                                 </div>
                             </div>
@@ -1519,7 +1082,7 @@
                                         className="text-5xl font-bold"
                                         style={{ 
                                             fontFamily: selectedBrandCore.fontPrimary,
-                                            color: colors.primary 
+                                            color: selectedBrandCore.color 
                                         }}
                                     >
                                         {formData.fullName || 'Your Name Here'}
@@ -1534,6 +1097,31 @@
                                         Leadership you can trust. Results you can see.
                                     </div>
                                 </div>
+                            </div>
+                        </div>
+ 
+                        {/* Logo Variations */}
+                        <div className="bg-white p-8 rounded-2xl shadow-lg">
+                            <h3 className="text-2xl font-bold mb-6" style={{ fontFamily: selectedBrandCore.fontPrimary }}>
+                                Logo Concepts
+                            </h3>
+                            <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
+                                {logoTypes.map((type, idx) => (
+                                    <div key={idx} className="border-2 border-gray-200 rounded-lg p-6 text-center">
+                                        <div className="h-24 flex items-center justify-center mb-3">
+                                            <div 
+                                                className="text-3xl font-bold"
+                                                style={{ 
+                                                    fontFamily: selectedBrandCore.fontPrimary,
+                                                    color: selectedBrandCore.color 
+                                                }}
+                                            >
+                                                {formData.fullName?.split(' ')[0] || 'LOGO'}
+                                            </div>
+                                        </div>
+                                        <div className="text-sm font-semibold text-gray-600">{type}</div>
+                                    </div>
+                                ))}
                             </div>
                         </div>
                     </div>
@@ -1565,8 +1153,8 @@
             );
         }
  
-        // Stage 7: Website Copy Direction (formerly Stage 6)
-        function Stage7({ formData, updateFormData, nextStage, prevStage }) {
+        // Stage 6: Website Copy Direction
+        function Stage6({ formData, updateFormData, nextStage, prevStage }) {
             const selectedBrandCore = BRAND_CORES[formData.brandCore];
             const [expandedSection, setExpandedSection] = useState(null);
  
@@ -1685,8 +1273,8 @@
             );
         }
  
-        // Stage 8: Collateral Priority (formerly Stage 7)
-        function Stage8({ formData, updateFormData, nextStage, prevStage }) {
+        // Stage 7: Collateral Priority
+        function Stage7({ formData, updateFormData, nextStage, prevStage }) {
             const collateralItems = [
                 { id: 'yardsigns', name: 'Yard Signs', priority: 'CRITICAL', icon: '🪧' },
                 { id: 'bumper', name: 'Bumper Stickers', priority: 'HIGH', icon: '🚗' },
@@ -1787,8 +1375,8 @@
             );
         }
  
-        // Stage 9: Final Review & Export (formerly Stage 8)
-        function Stage9({ formData, prevStage }) {
+        // Stage 8: Final Review & Export
+        function Stage8({ formData, prevStage }) {
             const [showConfetti, setShowConfetti] = useState(false);
             const selectedBrandCore = BRAND_CORES[formData.brandCore];
  
@@ -1798,241 +1386,14 @@
                 return () => clearTimeout(timer);
             }, []);
  
-            const handleDownload = () => {
-                generatePDF();
-            };
- 
-            const generatePDF = () => {
-                const colors = formData.useRecommended || !formData.colorPalette 
-                    ? {
-                        primary: selectedBrandCore?.color || '#a61e22',
-                        secondary: '#1e3a8a',
-                        tertiary: '#991b1b',
-                        accent: '#dc2626',
-                        neutralDark: '#000000',
-                        neutralLight: '#f9f8f6'
-                    }
-                    : formData.colorPalette;
- 
-                const printWindow = window.open('', '_blank');
-                const htmlContent = `<!DOCTYPE html>
-<html>
-<head>
-    <title>${formData.fullName || 'Candidate'} - Brand Profile</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&family=Bebas+Neue&display=swap" rel="stylesheet">
-    <style>
-        body { 
-            font-family: Inter, sans-serif; 
-            margin: 0; 
-            padding: 40px; 
-            color: #1f2937;
-        }
-        .cover { 
-            min-height: 100vh; 
-            background: linear-gradient(135deg, #000 0%, #1f2937 100%);
-            color: white;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            padding: 60px;
-        }
-        .logo { 
-            font-family: 'Bebas Neue', sans-serif;
-            font-size: 100px; 
-            color: #a61e22; 
-            margin-bottom: 20px;
-            letter-spacing: 4px;
-        }
-        .name { 
-            font-family: 'Bebas Neue', sans-serif;
-            font-size: 60px; 
-            margin: 40px 0 20px;
-        }
-        .office { 
-            font-size: 28px; 
-            color: #a61e22;
-            margin-bottom: 10px;
-        }
-        .page { 
-            page-break-after: always; 
-            padding: 60px;
-        }
-        h1 { 
-            font-family: 'Bebas Neue', sans-serif;
-            font-size: 48px; 
-            color: #000;
-            border-bottom: 4px solid #a61e22;
-            padding-bottom: 20px;
-            margin-bottom: 40px;
-        }
-        h2 { 
-            font-family: 'Bebas Neue', sans-serif;
-            font-size: 32px; 
-            color: #a61e22;
-            margin: 30px 0 20px;
-        }
-        .info-row { 
-            display: flex; 
-            padding: 12px 0;
-            border-bottom: 1px solid #e5e7eb;
-        }
-        .label { 
-            width: 200px; 
-            font-weight: 700;
-            color: #6b7280;
-            font-size: 14px;
-        }
-        .value { 
-            flex: 1;
-            font-weight: 500;
-        }
-        .color-grid { 
-            display: grid; 
-            grid-template-columns: repeat(3, 1fr); 
-            gap: 30px;
-            margin: 40px 0;
-        }
-        .color-box { 
-            height: 200px; 
-            border-radius: 12px;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.15);
-            margin-bottom: 15px;
-        }
-        .color-name { 
-            font-weight: 700;
-            font-size: 18px;
-            text-align: center;
-            margin-bottom: 5px;
-        }
-        .color-hex { 
-            font-family: monospace;
-            font-size: 16px;
-            text-align: center;
-            color: #6b7280;
-        }
-        .brand-box {
-            background: linear-gradient(135deg, ${colors.primary} 0%, ${colors.tertiary} 100%);
-            padding: 50px;
-            border-radius: 16px;
-            color: white;
-            margin: 40px 0;
-        }
-        .brand-name {
-            font-family: 'Bebas Neue', sans-serif;
-            font-size: 56px;
-            margin-bottom: 15px;
-        }
-        @media print {
-            .no-print { display: none; }
-            body { padding: 0; }
-            @page { margin: 0; }
-        }
-    </style>
-</head>
-<body>
-    <div class="no-print" style="position: fixed; top: 20px; right: 20px; background: #a61e22; color: white; padding: 15px 25px; border-radius: 8px; font-weight: 600; z-index: 9999;">
-        Press Ctrl+P (Cmd+P) → Save as PDF
-    </div>
- 
-    <!-- Cover -->
-    <div class="cover">
-        <div class="logo">OPERATION 1776</div>
-        <div style="font-size: 20px; color: #9ca3af; margin-bottom: 60px;">CAMPAIGN BRAND IDENTITY GUIDE</div>
-        <div class="name">${formData.fullName || 'Candidate Name'}</div>
-        <div class="office">${OFFICES.find(o => o.id === formData.office)?.name || 'Office'}</div>
-        <div style="font-size: 20px; color: #6b7280;">${formData.electionYear} Election</div>
-    </div>
- 
-    <!-- Profile -->
-    <div class="page">
-        <h1>CANDIDATE PROFILE</h1>
-        <div class="info-row">
-            <div class="label">Full Name</div>
-            <div class="value">${formData.fullName}</div>
-        </div>
-        <div class="info-row">
-            <div class="label">Office Sought</div>
-            <div class="value">${OFFICES.find(o => o.id === formData.office)?.name || ''}</div>
-        </div>
-        <div class="info-row">
-            <div class="label">Election Year</div>
-            <div class="value">${formData.electionYear}</div>
-        </div>
-        <div class="info-row">
-            <div class="label">Party</div>
-            <div class="value">${formData.party}</div>
-        </div>
-        
-        <h2>Professional Background</h2>
-        <div>${formData.backgrounds.map(b => 
-            `<span style="display: inline-block; padding: 8px 16px; background: #f3f4f6; border: 2px solid ${colors.primary}; border-radius: 25px; margin: 5px; font-weight: 600;">${PROFESSIONAL_BACKGROUNDS.find(bg => bg.id === b)?.name}</span>`
-        ).join('')}</div>
-        
-        <h2>Policy Priorities</h2>
-        <div>${formData.policyPriorities.map((p, i) => 
-            `<div style="padding: 15px 20px; background: ${colors.primary}; color: white; border-radius: 8px; margin: 10px 0; font-weight: 600;">
-                <span style="display: inline-block; width: 28px; height: 28px; background: white; color: ${colors.primary}; border-radius: 50%; text-align: center; line-height: 28px; margin-right: 10px; font-size: 14px;">${i+1}</span>
-                ${POLICY_PRIORITIES.find(pr => pr.id === p)?.name}
-            </div>`
-        ).join('')}</div>
-    </div>
- 
-    <!-- Brand Identity -->
-    <div class="page">
-        <h1>BRAND IDENTITY</h1>
-        <div class="brand-box">
-            <div class="brand-name">${selectedBrandCore?.name}</div>
-            <div style="font-size: 24px; margin-bottom: 20px; opacity: 0.9;">${selectedBrandCore?.subDirections.find(s => s.id === formData.subDirection)?.name}</div>
-            <div style="font-size: 17px; line-height: 1.8;">${selectedBrandCore?.positioning}</div>
-        </div>
-        
-        <h2>Typography</h2>
-        <div style="background: #f9fafb; padding: 40px; border-radius: 12px; margin: 30px 0;">
-            <div style="margin-bottom: 30px;">
-                <div style="font-size: 14px; color: #6b7280; font-weight: 700; margin-bottom: 10px;">PRIMARY FONT (HEADLINES)</div>
-                <div style="font-size: 48px; font-weight: 700; color: ${colors.primary};">${formData.fullName}</div>
-                <div style="margin-top: 5px; color: #6b7280;">${selectedBrandCore?.fontPrimary}</div>
-            </div>
-            <div>
-                <div style="font-size: 14px; color: #6b7280; font-weight: 700; margin-bottom: 10px;">SECONDARY FONT (BODY)</div>
-                <div style="font-size: 20px; line-height: 1.6;">Leadership you can trust. Results you can see.</div>
-                <div style="margin-top: 5px; color: #6b7280;">${selectedBrandCore?.fontSecondary}</div>
-            </div>
-        </div>
-    </div>
- 
-    <!-- Colors -->
-    <div class="page">
-        <h1>COLOR PALETTE</h1>
-        <div class="color-grid">
-            <div><div class="color-box" style="background: ${colors.primary};"></div><div class="color-name">Primary</div><div class="color-hex">${colors.primary}</div></div>
-            <div><div class="color-box" style="background: ${colors.secondary};"></div><div class="color-name">Secondary</div><div class="color-hex">${colors.secondary}</div></div>
-            <div><div class="color-box" style="background: ${colors.tertiary};"></div><div class="color-name">Tertiary</div><div class="color-hex">${colors.tertiary}</div></div>
-            <div><div class="color-box" style="background: ${colors.accent};"></div><div class="color-name">Accent</div><div class="color-hex">${colors.accent}</div></div>
-            <div><div class="color-box" style="background: ${colors.neutralDark};"></div><div class="color-name">Dark</div><div class="color-hex">${colors.neutralDark}</div></div>
-            <div><div class="color-box" style="background: ${colors.neutralLight}; border: 2px solid #e5e7eb;"></div><div class="color-name">Light</div><div class="color-hex">${colors.neutralLight}</div></div>
-        </div>
-        
-        <div style="margin-top: 80px; padding-top: 30px; border-top: 2px solid #e5e7eb; text-align: center; color: #9ca3af;">
-            <p style="font-weight: 600; color: #1f2937; margin-bottom: 8px;">Generated by Operation 1776 Brand Discovery Tool</p>
-            <p style="font-style: italic;">Rooted in Freedom. Driven by Purpose.</p>
-        </div>
-    </div>
- 
-    <script>
-        setTimeout(() => window.print(), 1000);
-    </script>
-</body>
-</html>`;
-                
-                printWindow.document.write(htmlContent);
-                printWindow.document.close();
-            };
- 
-            const handlePrint = () => {
-                generatePDF();
+            const handleDownload = (type) => {
+                const data = JSON.stringify(formData, null, 2);
+                const blob = new Blob([data], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `${formData.fullName.replace(/\s+/g, '-')}-brand-profile.json`;
+                a.click();
             };
  
             return (
@@ -2158,21 +1519,21 @@
                             type="button"
                             onClick={(e) => {
                                 e.preventDefault();
-                                handleDownload();
+                                handleDownload('json');
                             }}
                             className="px-8 py-4 bg-[#a61e22] text-white rounded-lg font-bold text-lg hover:bg-[#8a1a1d] shadow-lg transition-all"
                         >
-                            📥 Download Brand Profile (PDF)
+                            📥 Download Brand Profile
                         </button>
                         <button
                             type="button"
                             onClick={(e) => {
                                 e.preventDefault();
-                                handlePrint();
+                                window.print();
                             }}
                             className="px-8 py-4 bg-black text-white rounded-lg font-bold text-lg hover:bg-gray-800 shadow-lg transition-all"
                         >
-                            🖨️ Print Brand Profile
+                            🖨️ Print Summary
                         </button>
                     </div>
  
@@ -2198,4 +1559,4 @@
     </script>
 </body>
 </html>
- 
+
