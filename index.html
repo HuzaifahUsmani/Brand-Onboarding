@@ -23,12 +23,12 @@
             background: #f9f8f6;
             overflow-x: hidden;
         }
- 
+
         .distressed-text {
             position: relative;
             display: inline-block;
         }
- 
+
         .distressed-text::after {
             content: attr(data-text);
             position: absolute;
@@ -37,7 +37,7 @@
             z-index: -1;
             text-shadow: 2px 2px 0px rgba(0,0,0,0.1);
         }
- 
+
         @keyframes fadeInUp {
             from {
                 opacity: 0;
@@ -48,7 +48,7 @@
                 transform: translateY(0);
             }
         }
- 
+
         @keyframes slideIn {
             from {
                 opacity: 0;
@@ -59,7 +59,7 @@
                 transform: translateX(0);
             }
         }
- 
+
         @keyframes pulse {
             0%, 100% {
                 opacity: 1;
@@ -68,7 +68,7 @@
                 opacity: 0.5;
             }
         }
- 
+
         @keyframes confetti {
             0% {
                 transform: translateY(0) rotateZ(0deg);
@@ -79,55 +79,55 @@
                 opacity: 0;
             }
         }
- 
+
         .fade-in-up {
             animation: fadeInUp 0.6s ease-out forwards;
         }
- 
+
         .slide-in {
             animation: slideIn 0.4s ease-out forwards;
         }
- 
+
         .card-hover {
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
- 
+
         .card-hover:hover {
             transform: translateY(-8px);
             box-shadow: 0 20px 40px rgba(166, 30, 34, 0.2);
         }
- 
+
         .progress-step {
             transition: all 0.3s ease;
         }
- 
+
         .progress-step.active {
             transform: scale(1.1);
         }
- 
+
         .confetti-piece {
             position: fixed;
             width: 10px;
             height: 10px;
             animation: confetti 3s ease-out forwards;
         }
- 
+
         .brand-commander { --brand-color: #1e3a8a; }
         .brand-patriot { --brand-color: #a61e22; }
         .brand-reformer { --brand-color: #ea580c; }
         .brand-community { --brand-color: #059669; }
         .brand-executive { --brand-color: #4338ca; }
- 
+
         .glow-effect {
             box-shadow: 0 0 20px var(--brand-color, #a61e22);
         }
- 
+
         input:focus, select:focus, textarea:focus {
             outline: none;
             border-color: #a61e22;
             box-shadow: 0 0 0 3px rgba(166, 30, 34, 0.1);
         }
- 
+
         .star-pattern {
             background-image: 
                 radial-gradient(circle at 20% 30%, rgba(166, 30, 34, 0.05) 0%, transparent 50%),
@@ -137,10 +137,10 @@
 </head>
 <body>
     <div id="root"></div>
- 
+
     <script type="text/babel">
         const { useState, useEffect, useRef } = React;
- 
+
         // Brand Core Data
         const BRAND_CORES = {
             COMMANDER: {
@@ -224,7 +224,7 @@
                 ]
             }
         };
- 
+
         const POLICY_PRIORITIES = [
             { id: 'border', name: 'Border Security', icon: '🛡️' },
             { id: 'economy', name: 'Economy & Jobs', icon: '💼' },
@@ -242,7 +242,7 @@
             { id: 'infrastructure', name: 'Infrastructure', icon: '🏗️' },
             { id: 'agriculture', name: 'Agriculture', icon: '🌾' }
         ];
- 
+
         const OFFICES = [
             { id: 'city', name: 'City Council', icon: '🏛️' },
             { id: 'county', name: 'County Office', icon: '🏘️' },
@@ -253,7 +253,7 @@
             { id: 'governor', name: 'Governor', icon: '👑' },
             { id: 'other', name: 'Other', icon: '📋' }
         ];
- 
+
         const PROFESSIONAL_BACKGROUNDS = [
             { id: 'military', name: 'Military', icon: '🎖️' },
             { id: 'lawenforcement', name: 'Law Enforcement', icon: '👮' },
@@ -267,7 +267,7 @@
             { id: 'bluecollar', name: 'Blue Collar', icon: '🔧' },
             { id: 'tech', name: 'Tech/Engineering', icon: '💻' }
         ];
- 
+
         function App() {
             const [currentStage, setCurrentStage] = useState(1);
             const [formData, setFormData] = useState({
@@ -295,33 +295,37 @@
                 subDirection: '',
                 
                 // Stage 5
-                visualApproved: false,
+                colorPalette: null, // Will store { primary, secondary, accent }
+                useRecommended: true,
                 
                 // Stage 6
-                websiteCopy: {},
+                visualApproved: false,
                 
                 // Stage 7
+                websiteCopy: {},
+                
+                // Stage 8
                 collateralPriorities: {}
             });
- 
+
             const updateFormData = (field, value) => {
                 setFormData(prev => ({ ...prev, [field]: value }));
             };
- 
+
             const nextStage = () => {
-                if (currentStage < 8) {
+                if (currentStage < 9) {
                     setCurrentStage(prev => prev + 1);
                     window.scrollTo({ top: 0, behavior: 'smooth' });
                 }
             };
- 
+
             const prevStage = () => {
                 if (currentStage > 1) {
                     setCurrentStage(prev => prev - 1);
                     window.scrollTo({ top: 0, behavior: 'smooth' });
                 }
             };
- 
+
             const canProceed = () => {
                 switch(currentStage) {
                     case 1:
@@ -332,11 +336,13 @@
                         return formData.brandCore !== '';
                     case 4:
                         return formData.subDirection !== '';
+                    case 5:
+                        return formData.useRecommended || formData.colorPalette !== null;
                     default:
                         return true;
                 }
             };
- 
+
             return (
                 <div className="min-h-screen bg-[#f9f8f6]">
                     {/* Progress Header */}
@@ -351,12 +357,13 @@
                         {currentStage === 5 && <Stage5 formData={formData} updateFormData={updateFormData} nextStage={nextStage} prevStage={prevStage} />}
                         {currentStage === 6 && <Stage6 formData={formData} updateFormData={updateFormData} nextStage={nextStage} prevStage={prevStage} />}
                         {currentStage === 7 && <Stage7 formData={formData} updateFormData={updateFormData} nextStage={nextStage} prevStage={prevStage} />}
-                        {currentStage === 8 && <Stage8 formData={formData} prevStage={prevStage} />}
+                        {currentStage === 8 && <Stage8 formData={formData} updateFormData={updateFormData} nextStage={nextStage} prevStage={prevStage} />}
+                        {currentStage === 9 && <Stage9 formData={formData} prevStage={prevStage} />}
                     </div>
                 </div>
             );
         }
- 
+
         // Progress Header Component
         function ProgressHeader({ currentStage, setCurrentStage }) {
             const stages = [
@@ -364,12 +371,13 @@
                 { num: 2, name: 'Profile' },
                 { num: 3, name: 'Brand Core' },
                 { num: 4, name: 'Direction' },
-                { num: 5, name: 'Visual' },
-                { num: 6, name: 'Copy' },
-                { num: 7, name: 'Collateral' },
-                { num: 8, name: 'Review' }
+                { num: 5, name: 'Colors' },
+                { num: 6, name: 'Visual' },
+                { num: 7, name: 'Copy' },
+                { num: 8, name: 'Collateral' },
+                { num: 9, name: 'Review' }
             ];
- 
+
             return (
                 <div className="sticky top-0 z-50 bg-black shadow-lg">
                     <div className="max-w-7xl mx-auto px-4 py-4">
@@ -388,7 +396,7 @@
                                     <p className="text-[#a61e22] text-xs">Brand Discovery Journey</p>
                                 </div>
                             </div>
- 
+
                             {/* Progress Steps */}
                             <div className="hidden md:flex items-center space-x-2">
                                 {stages.map((stage, idx) => (
@@ -416,25 +424,25 @@
                                     </React.Fragment>
                                 ))}
                             </div>
- 
+
                             {/* Mobile Progress */}
                             <div className="md:hidden text-white text-sm">
-                                Step {currentStage} of 8
+                                Step {currentStage} of 9
                             </div>
                         </div>
                     </div>
                 </div>
             );
         }
- 
+
         // Stage 1: Candidate Basics
         function Stage1({ formData, updateFormData, nextStage, canProceed }) {
             const [animate, setAnimate] = useState(false);
- 
+
             useEffect(() => {
                 setAnimate(true);
             }, []);
- 
+
             return (
                 <div className={`space-y-12 ${animate ? 'fade-in-up' : 'opacity-0'}`}>
                     {/* Hero Section */}
@@ -478,7 +486,7 @@
                                 </g>
                             </svg>
                         </div>
- 
+
                         <h1 className="text-5xl md:text-7xl font-bold text-black tracking-tight" style={{ fontFamily: 'Bebas Neue' }}>
                             BUILD YOUR
                             <span className="block text-[#a61e22] mt-2">CAMPAIGN BRAND</span>
@@ -488,7 +496,7 @@
                             and positions you for victory. Let's begin with the fundamentals.
                         </p>
                     </div>
- 
+
                     {/* Form Fields */}
                     <div className="max-w-3xl mx-auto space-y-8">
                         {/* Full Name */}
@@ -504,7 +512,7 @@
                                 className="w-full px-6 py-4 bg-white border-2 border-gray-200 rounded-lg text-lg transition-all focus:border-[#a61e22]"
                             />
                         </div>
- 
+
                         {/* Office Sought */}
                         <div className="slide-in" style={{ animationDelay: '0.1s' }}>
                             <label className="block text-sm font-semibold text-gray-700 mb-3">
@@ -531,7 +539,7 @@
                                 ))}
                             </div>
                         </div>
- 
+
                         {/* Election Year */}
                         <div className="slide-in" style={{ animationDelay: '0.2s' }}>
                             <label className="block text-sm font-semibold text-gray-700 mb-3">
@@ -558,7 +566,7 @@
                                 ))}
                             </div>
                         </div>
- 
+
                         {/* Candidate Type */}
                         <div className="slide-in" style={{ animationDelay: '0.3s' }}>
                             <label className="block text-sm font-semibold text-gray-700 mb-3">
@@ -590,7 +598,7 @@
                             </div>
                         </div>
                     </div>
- 
+
                     {/* Navigation */}
                     <div className="flex justify-end max-w-3xl mx-auto pt-8">
                         <button
@@ -612,7 +620,7 @@
                 </div>
             );
         }
- 
+
         // Stage 2: Candidate Profile
         function Stage2({ formData, updateFormData, nextStage, prevStage, canProceed }) {
             const toggleBackground = (bgId) => {
@@ -623,7 +631,7 @@
                     updateFormData('backgrounds', [...current, bgId]);
                 }
             };
- 
+
             const togglePriority = (priorityId) => {
                 const current = formData.policyPriorities || [];
                 if (current.includes(priorityId)) {
@@ -632,7 +640,7 @@
                     updateFormData('policyPriorities', [...current, priorityId]);
                 }
             };
- 
+
             return (
                 <div className="space-y-12 fade-in-up">
                     <div className="text-center space-y-4">
@@ -643,7 +651,7 @@
                             Your background and priorities shape your brand. Select what defines you.
                         </p>
                     </div>
- 
+
                     <div className="max-w-4xl mx-auto space-y-10">
                         {/* Professional Background */}
                         <div>
@@ -672,7 +680,7 @@
                                 ))}
                             </div>
                         </div>
- 
+
                         {/* Policy Priorities */}
                         <div>
                             <label className="block text-sm font-semibold text-gray-700 mb-3">
@@ -702,7 +710,7 @@
                                 ))}
                             </div>
                         </div>
- 
+
                         {/* Personal Story */}
                         <div>
                             <label className="block text-sm font-semibold text-gray-700 mb-3">
@@ -721,7 +729,7 @@
                             </div>
                         </div>
                     </div>
- 
+
                     {/* Navigation */}
                     <div className="flex justify-between max-w-4xl mx-auto pt-8">
                         <button
@@ -753,12 +761,12 @@
                 </div>
             );
         }
- 
+
         // Stage 3: Brand Core Selection (THE CRITICAL MOMENT)
         function Stage3({ formData, updateFormData, nextStage, prevStage }) {
             const [hoveredCore, setHoveredCore] = useState(null);
             const [selectedCore, setSelectedCore] = useState(formData.brandCore);
- 
+
             const handleCoreSelect = (coreId) => {
                 setSelectedCore(coreId);
                 updateFormData('brandCore', coreId);
@@ -766,7 +774,7 @@
                     nextStage();
                 }, 800);
             };
- 
+
             return (
                 <div className="space-y-12 fade-in-up">
                     <div className="text-center space-y-6">
@@ -779,7 +787,7 @@
                             messaging strategy, and how voters perceive you. Choose the one that feels like <em>you</em>.
                         </p>
                     </div>
- 
+
                     {/* Brand Core Cards */}
                     <div className="max-w-6xl mx-auto grid md:grid-cols-2 lg:grid-cols-3 gap-6 px-4">
                         {Object.values(BRAND_CORES).map((core, idx) => (
@@ -810,7 +818,7 @@
                                         color={selectedCore === core.id ? '#ffffff' : core.color}
                                     />
                                 </div>
- 
+
                                 {/* Content */}
                                 <h3 
                                     className={`text-3xl font-bold mb-2 ${selectedCore === core.id ? 'text-white' : 'text-black'}`}
@@ -821,14 +829,14 @@
                                 <p className={`text-sm font-semibold mb-4 ${selectedCore === core.id ? 'text-white/90' : 'text-gray-600'}`}>
                                     {core.descriptor}
                                 </p>
- 
+
                                 {/* Expanded Info on Hover */}
                                 <div className={`transition-all duration-300 ${hoveredCore === core.id || selectedCore === core.id ? 'opacity-100 max-h-48' : 'opacity-0 max-h-0 overflow-hidden'}`}>
                                     <p className={`text-sm leading-relaxed ${selectedCore === core.id ? 'text-white/80' : 'text-gray-700'}`}>
                                         {core.positioning}
                                     </p>
                                 </div>
- 
+
                                 {/* Selection Indicator */}
                                 {selectedCore === core.id && (
                                     <div className="absolute top-4 right-4 w-8 h-8 bg-white rounded-full flex items-center justify-center">
@@ -840,7 +848,7 @@
                             </div>
                         ))}
                     </div>
- 
+
                     {/* Navigation */}
                     <div className="flex justify-center max-w-6xl mx-auto pt-8">
                         <button
@@ -857,7 +865,7 @@
                 </div>
             );
         }
- 
+
         // Brand Core Icon Component
         function BrandCoreIcon({ coreId, color }) {
             const icons = {
@@ -912,22 +920,22 @@
                     </svg>
                 )
             };
- 
+
             return icons[coreId] || null;
         }
- 
+
         // Stage 4: Sub-Direction Refinement
         function Stage4({ formData, updateFormData, nextStage, prevStage }) {
             const selectedBrandCore = BRAND_CORES[formData.brandCore];
             const [selectedSub, setSelectedSub] = useState(formData.subDirection);
- 
+
             if (!selectedBrandCore) return null;
- 
+
             const handleSubSelect = (subId) => {
                 setSelectedSub(subId);
                 updateFormData('subDirection', subId);
             };
- 
+
             return (
                 <div className="space-y-12 fade-in-up">
                     <div className="text-center space-y-4">
@@ -942,7 +950,7 @@
                             Choose the specific variation that best represents your unique approach within the {selectedBrandCore.name} brand.
                         </p>
                     </div>
- 
+
                     {/* Sub-Direction Cards */}
                     <div className="max-w-5xl mx-auto grid md:grid-cols-2 gap-6">
                         {selectedBrandCore.subDirections.map((sub, idx) => (
@@ -972,7 +980,7 @@
                                 <p className={`leading-relaxed ${selectedSub === sub.id ? 'text-white/90' : 'text-gray-600'}`}>
                                     {sub.description}
                                 </p>
- 
+
                                 {selectedSub === sub.id && (
                                     <div className="mt-4 flex items-center text-white text-sm font-semibold">
                                         <svg className="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
@@ -984,7 +992,7 @@
                             </div>
                         ))}
                     </div>
- 
+
                     {/* Navigation */}
                     <div className="flex justify-between max-w-5xl mx-auto pt-8">
                         <button
@@ -1016,15 +1024,290 @@
                 </div>
             );
         }
- 
-        // Stage 5: Visual Identity Preview
+
+        // Stage 5: Color Palette Selection
         function Stage5({ formData, updateFormData, nextStage, prevStage }) {
+            const selectedBrandCore = BRAND_CORES[formData.brandCore];
+            const [selectedPalette, setSelectedPalette] = useState(formData.colorPalette);
+            const [useRecommended, setUseRecommended] = useState(formData.useRecommended);
+
+            if (!selectedBrandCore) return null;
+
+            // Curated color palettes
+            const colorPalettes = [
+                {
+                    id: 'patriot-classic',
+                    name: 'Patriot Classic',
+                    description: 'Traditional red, white, and blue',
+                    primary: '#a61e22',
+                    secondary: '#1e3a8a',
+                    accent: '#f9f8f6'
+                },
+                {
+                    id: 'modern-conservative',
+                    name: 'Modern Conservative',
+                    description: 'Deep navy with crimson accents',
+                    primary: '#1e40af',
+                    secondary: '#991b1b',
+                    accent: '#e5e7eb'
+                },
+                {
+                    id: 'bold-reformer',
+                    name: 'Bold Reformer',
+                    description: 'Energetic orange and slate',
+                    primary: '#ea580c',
+                    secondary: '#1e293b',
+                    accent: '#f1f5f9'
+                },
+                {
+                    id: 'heritage-gold',
+                    name: 'Heritage Gold',
+                    description: 'Dignified burgundy and gold',
+                    primary: '#7c2d12',
+                    secondary: '#ca8a04',
+                    accent: '#fef3c7'
+                },
+                {
+                    id: 'grassroots-green',
+                    name: 'Grassroots Green',
+                    description: 'Approachable forest green',
+                    primary: '#15803d',
+                    secondary: '#1e3a8a',
+                    accent: '#f0fdf4'
+                },
+                {
+                    id: 'executive-slate',
+                    name: 'Executive Slate',
+                    description: 'Professional charcoal and steel',
+                    primary: '#1e293b',
+                    secondary: '#475569',
+                    accent: '#f8fafc'
+                },
+                {
+                    id: 'liberty-purple',
+                    name: 'Liberty Purple',
+                    description: 'Distinctive royal purple',
+                    primary: '#6b21a8',
+                    secondary: '#1e3a8a',
+                    accent: '#faf5ff'
+                },
+                {
+                    id: 'frontier-bronze',
+                    name: 'Frontier Bronze',
+                    description: 'Rustic bronze and earth tones',
+                    primary: '#92400e',
+                    secondary: '#365314',
+                    accent: '#fef9c3'
+                }
+            ];
+
+            const handlePaletteSelect = (palette) => {
+                setSelectedPalette(palette);
+                setUseRecommended(false);
+                updateFormData('colorPalette', palette);
+                updateFormData('useRecommended', false);
+            };
+
+            const handleUseRecommended = () => {
+                setUseRecommended(true);
+                setSelectedPalette(null);
+                updateFormData('useRecommended', true);
+                updateFormData('colorPalette', null);
+            };
+
+            const getRecommendedColors = () => {
+                return {
+                    primary: selectedBrandCore.color,
+                    secondary: '#000000',
+                    accent: '#f9f8f6'
+                };
+            };
+
+            return (
+                <div className="space-y-12 fade-in-up">
+                    <div className="text-center space-y-4">
+                        <div className="inline-block px-6 py-2 rounded-full text-white text-sm font-bold mb-4" 
+                             style={{ backgroundColor: selectedBrandCore.color }}>
+                            {selectedBrandCore.name} Brand
+                        </div>
+                        <h2 className="text-5xl font-bold text-black" style={{ fontFamily: 'Bebas Neue' }}>
+                            CHOOSE YOUR <span className="text-[#a61e22]">COLOR PALETTE</span>
+                        </h2>
+                        <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+                            Select colors that will define your campaign's visual identity, or use our recommended palette based on your brand core.
+                        </p>
+                    </div>
+
+                    <div className="max-w-6xl mx-auto space-y-8">
+                        {/* Recommended Option */}
+                        <div 
+                            onClick={(e) => {
+                                e.preventDefault();
+                                handleUseRecommended();
+                            }}
+                            className={`p-8 rounded-2xl cursor-pointer transition-all border-2 ${
+                                useRecommended
+                                    ? 'border-[#a61e22] bg-white ring-4 ring-[#a61e22] ring-opacity-20'
+                                    : 'border-gray-300 bg-white hover:border-[#a61e22]'
+                            }`}
+                        >
+                            <div className="flex items-center justify-between mb-6">
+                                <div>
+                                    <h3 className="text-2xl font-bold text-gray-900 mb-2">
+                                        ⭐ Use Recommended Colors
+                                    </h3>
+                                    <p className="text-gray-600">
+                                        We'll select the perfect colors based on your {selectedBrandCore.name} brand identity
+                                    </p>
+                                </div>
+                                {useRecommended && (
+                                    <div className="w-8 h-8 bg-[#a61e22] rounded-full flex items-center justify-center flex-shrink-0">
+                                        <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                                        </svg>
+                                    </div>
+                                )}
+                            </div>
+                            <div className="flex gap-4">
+                                {Object.values(getRecommendedColors()).map((color, idx) => (
+                                    <div key={idx} className="flex-1">
+                                        <div 
+                                            className="h-24 rounded-lg border-2 border-gray-200 mb-2"
+                                            style={{ backgroundColor: color }}
+                                        ></div>
+                                        <div className="text-center text-sm font-mono text-gray-600">{color}</div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+
+                        {/* Divider */}
+                        <div className="relative">
+                            <div className="absolute inset-0 flex items-center">
+                                <div className="w-full border-t-2 border-gray-200"></div>
+                            </div>
+                            <div className="relative flex justify-center">
+                                <span className="bg-[#f9f8f6] px-6 text-lg font-semibold text-gray-500">
+                                    OR CHOOSE A CUSTOM PALETTE
+                                </span>
+                            </div>
+                        </div>
+
+                        {/* Color Palette Grid */}
+                        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                            {colorPalettes.map((palette, idx) => (
+                                <div
+                                    key={palette.id}
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        handlePaletteSelect(palette);
+                                    }}
+                                    className={`cursor-pointer rounded-xl overflow-hidden transition-all card-hover ${
+                                        selectedPalette?.id === palette.id && !useRecommended
+                                            ? 'ring-4 ring-[#a61e22] transform scale-105'
+                                            : 'border-2 border-gray-200'
+                                    }`}
+                                    style={{ animationDelay: `${idx * 0.05}s` }}
+                                >
+                                    {/* Color Swatches */}
+                                    <div className="grid grid-cols-3">
+                                        <div 
+                                            className="h-32"
+                                            style={{ backgroundColor: palette.primary }}
+                                        ></div>
+                                        <div 
+                                            className="h-32"
+                                            style={{ backgroundColor: palette.secondary }}
+                                        ></div>
+                                        <div 
+                                            className="h-32"
+                                            style={{ backgroundColor: palette.accent }}
+                                        ></div>
+                                    </div>
+
+                                    {/* Palette Info */}
+                                    <div className="p-4 bg-white">
+                                        <h4 className="font-bold text-gray-900 mb-1">{palette.name}</h4>
+                                        <p className="text-sm text-gray-600 mb-3">{palette.description}</p>
+                                        
+                                        {/* Hex Codes */}
+                                        <div className="space-y-1">
+                                            <div className="flex items-center justify-between text-xs">
+                                                <span className="text-gray-500">Primary:</span>
+                                                <span className="font-mono text-gray-700">{palette.primary}</span>
+                                            </div>
+                                            <div className="flex items-center justify-between text-xs">
+                                                <span className="text-gray-500">Secondary:</span>
+                                                <span className="font-mono text-gray-700">{palette.secondary}</span>
+                                            </div>
+                                            <div className="flex items-center justify-between text-xs">
+                                                <span className="text-gray-500">Accent:</span>
+                                                <span className="font-mono text-gray-700">{palette.accent}</span>
+                                            </div>
+                                        </div>
+
+                                        {selectedPalette?.id === palette.id && !useRecommended && (
+                                            <div className="mt-3 flex items-center text-[#a61e22] text-sm font-semibold">
+                                                <svg className="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                                                </svg>
+                                                Selected
+                                            </div>
+                                        )}
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+
+                    {/* Navigation */}
+                    <div className="flex justify-between max-w-6xl mx-auto pt-8">
+                        <button
+                            type="button"
+                            onClick={(e) => {
+                                e.preventDefault();
+                                prevStage();
+                            }}
+                            className="px-8 py-4 rounded-lg font-bold text-lg border-2 border-gray-300 text-gray-700 hover:border-[#a61e22] hover:text-[#a61e22] transition-all"
+                        >
+                            ← Back
+                        </button>
+                        <button
+                            type="button"
+                            onClick={(e) => {
+                                e.preventDefault();
+                                nextStage();
+                            }}
+                            className="px-8 py-4 rounded-lg font-bold text-lg bg-[#a61e22] text-white hover:bg-[#8a1a1d] shadow-lg transition-all"
+                        >
+                            Continue to Visual Identity →
+                        </button>
+                    </div>
+                </div>
+            );
+        }
+
+        // Stage 6: Visual Identity Preview (formerly Stage 5)
+        function Stage6({ formData, updateFormData, nextStage, prevStage }) {
             const selectedBrandCore = BRAND_CORES[formData.brandCore];
             
             if (!selectedBrandCore) return null;
- 
+
+            // Get the color palette to display
+            const getColors = () => {
+                if (formData.useRecommended || !formData.colorPalette) {
+                    return {
+                        primary: selectedBrandCore.color,
+                        secondary: '#000000',
+                        accent: '#f9f8f6'
+                    };
+                }
+                return formData.colorPalette;
+            };
+
+            const colors = getColors();
             const logoTypes = ['Wordmark', 'Badge/Emblem', 'Symbol+Text', 'Monogram', 'Campaign Sign'];
- 
+
             return (
                 <div className="space-y-12 fade-in-up">
                     <div className="text-center space-y-4">
@@ -1035,7 +1318,7 @@
                             Here's how your brand comes to life visually. This is your identity.
                         </p>
                     </div>
- 
+
                     <div className="max-w-6xl mx-auto space-y-8">
                         {/* Color Palette */}
                         <div className="bg-white p-8 rounded-2xl shadow-lg">
@@ -1046,30 +1329,36 @@
                                 <div>
                                     <div 
                                         className="h-32 rounded-lg mb-3 border-2 border-gray-200"
-                                        style={{ backgroundColor: selectedBrandCore.color }}
+                                        style={{ backgroundColor: colors.primary }}
                                     ></div>
                                     <div className="text-center">
                                         <div className="font-bold">Primary</div>
-                                        <div className="text-sm text-gray-600">{selectedBrandCore.color}</div>
+                                        <div className="text-sm text-gray-600">{colors.primary}</div>
                                     </div>
                                 </div>
                                 <div>
-                                    <div className="h-32 rounded-lg mb-3 bg-black border-2 border-gray-200"></div>
+                                    <div 
+                                        className="h-32 rounded-lg mb-3 border-2 border-gray-200"
+                                        style={{ backgroundColor: colors.secondary }}
+                                    ></div>
                                     <div className="text-center">
                                         <div className="font-bold">Secondary</div>
-                                        <div className="text-sm text-gray-600">#000000</div>
+                                        <div className="text-sm text-gray-600">{colors.secondary}</div>
                                     </div>
                                 </div>
                                 <div>
-                                    <div className="h-32 rounded-lg mb-3 bg-[#f9f8f6] border-2 border-gray-200"></div>
+                                    <div 
+                                        className="h-32 rounded-lg mb-3 border-2 border-gray-200"
+                                        style={{ backgroundColor: colors.accent }}
+                                    ></div>
                                     <div className="text-center">
                                         <div className="font-bold">Accent</div>
-                                        <div className="text-sm text-gray-600">#f9f8f6</div>
+                                        <div className="text-sm text-gray-600">{colors.accent}</div>
                                     </div>
                                 </div>
                             </div>
                         </div>
- 
+
                         {/* Typography */}
                         <div className="bg-white p-8 rounded-2xl shadow-lg">
                             <h3 className="text-2xl font-bold mb-6" style={{ fontFamily: selectedBrandCore.fontPrimary }}>
@@ -1082,7 +1371,7 @@
                                         className="text-5xl font-bold"
                                         style={{ 
                                             fontFamily: selectedBrandCore.fontPrimary,
-                                            color: selectedBrandCore.color 
+                                            color: colors.primary 
                                         }}
                                     >
                                         {formData.fullName || 'Your Name Here'}
@@ -1099,7 +1388,7 @@
                                 </div>
                             </div>
                         </div>
- 
+
                         {/* Logo Variations */}
                         <div className="bg-white p-8 rounded-2xl shadow-lg">
                             <h3 className="text-2xl font-bold mb-6" style={{ fontFamily: selectedBrandCore.fontPrimary }}>
@@ -1113,7 +1402,7 @@
                                                 className="text-3xl font-bold"
                                                 style={{ 
                                                     fontFamily: selectedBrandCore.fontPrimary,
-                                                    color: selectedBrandCore.color 
+                                                    color: colors.primary 
                                                 }}
                                             >
                                                 {formData.fullName?.split(' ')[0] || 'LOGO'}
@@ -1125,7 +1414,7 @@
                             </div>
                         </div>
                     </div>
- 
+
                     {/* Navigation */}
                     <div className="flex justify-between max-w-6xl mx-auto pt-8">
                         <button
@@ -1152,14 +1441,14 @@
                 </div>
             );
         }
- 
-        // Stage 6: Website Copy Direction
-        function Stage6({ formData, updateFormData, nextStage, prevStage }) {
+
+        // Stage 7: Website Copy Direction (formerly Stage 6)
+        function Stage7({ formData, updateFormData, nextStage, prevStage }) {
             const selectedBrandCore = BRAND_CORES[formData.brandCore];
             const [expandedSection, setExpandedSection] = useState(null);
- 
+
             if (!selectedBrandCore) return null;
- 
+
             const sections = [
                 { id: 'hero', name: 'Hero Section', sample: `${formData.fullName || 'Your Name'} for ${OFFICES.find(o => o.id === formData.office)?.name || 'Office'}` },
                 { id: 'about', name: 'About/Bio', sample: 'Your story, your values, your commitment to serve.' },
@@ -1168,7 +1457,7 @@
                 { id: 'donate', name: 'Donate CTA', sample: 'Fuel this campaign. Every dollar counts.' },
                 { id: 'contact', name: 'Contact', sample: 'Get in touch. Stay informed.' }
             ];
- 
+
             return (
                 <div className="space-y-12 fade-in-up">
                     <div className="text-center space-y-4">
@@ -1179,7 +1468,7 @@
                             Strategic messaging for each section of your campaign website.
                         </p>
                     </div>
- 
+
                     <div className="max-w-4xl mx-auto space-y-4">
                         {sections.map((section, idx) => (
                             <div 
@@ -1213,7 +1502,7 @@
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                                     </svg>
                                 </button>
- 
+
                                 {expandedSection === section.id && (
                                     <div className="px-8 pb-6 border-t border-gray-100">
                                         <div className="pt-6 space-y-4">
@@ -1245,7 +1534,7 @@
                             </div>
                         ))}
                     </div>
- 
+
                     {/* Navigation */}
                     <div className="flex justify-between max-w-4xl mx-auto pt-8">
                         <button
@@ -1272,9 +1561,9 @@
                 </div>
             );
         }
- 
-        // Stage 7: Collateral Priority
-        function Stage7({ formData, updateFormData, nextStage, prevStage }) {
+
+        // Stage 8: Collateral Priority (formerly Stage 7)
+        function Stage8({ formData, updateFormData, nextStage, prevStage }) {
             const collateralItems = [
                 { id: 'yardsigns', name: 'Yard Signs', priority: 'CRITICAL', icon: '🪧' },
                 { id: 'bumper', name: 'Bumper Stickers', priority: 'HIGH', icon: '🚗' },
@@ -1289,14 +1578,14 @@
                 { id: 'letterhead', name: 'Letterhead', priority: 'LOW', icon: '📄' },
                 { id: 'website', name: 'Website', priority: 'CRITICAL', icon: '🌐' }
             ];
- 
+
             const priorityColors = {
                 'CRITICAL': '#a61e22',
                 'HIGH': '#ea580c',
                 'MEDIUM': '#059669',
                 'LOW': '#6b7280'
             };
- 
+
             return (
                 <div className="space-y-12 fade-in-up">
                     <div className="text-center space-y-4">
@@ -1307,7 +1596,7 @@
                             Based on your office and strategy, here are your priority materials.
                         </p>
                     </div>
- 
+
                     <div className="max-w-5xl mx-auto">
                         {/* Priority Legend */}
                         <div className="flex justify-center space-x-6 mb-8">
@@ -1321,7 +1610,7 @@
                                 </div>
                             ))}
                         </div>
- 
+
                         {/* Collateral Grid */}
                         <div className="grid md:grid-cols-3 gap-6">
                             {collateralItems.map((item, idx) => (
@@ -1347,7 +1636,7 @@
                             ))}
                         </div>
                     </div>
- 
+
                     {/* Navigation */}
                     <div className="flex justify-between max-w-5xl mx-auto pt-8">
                         <button
@@ -1374,18 +1663,18 @@
                 </div>
             );
         }
- 
-        // Stage 8: Final Review & Export
-        function Stage8({ formData, prevStage }) {
+
+        // Stage 9: Final Review & Export (formerly Stage 8)
+        function Stage9({ formData, prevStage }) {
             const [showConfetti, setShowConfetti] = useState(false);
             const selectedBrandCore = BRAND_CORES[formData.brandCore];
- 
+
             useEffect(() => {
                 setShowConfetti(true);
                 const timer = setTimeout(() => setShowConfetti(false), 3000);
                 return () => clearTimeout(timer);
             }, []);
- 
+
             const handleDownload = (type) => {
                 const data = JSON.stringify(formData, null, 2);
                 const blob = new Blob([data], { type: 'application/json' });
@@ -1395,7 +1684,7 @@
                 a.download = `${formData.fullName.replace(/\s+/g, '-')}-brand-profile.json`;
                 a.click();
             };
- 
+
             return (
                 <div className="space-y-12 fade-in-up">
                     {/* Confetti Effect */}
@@ -1414,7 +1703,7 @@
                             ))}
                         </div>
                     )}
- 
+
                     {/* Success Message */}
                     <div className="text-center space-y-6">
                         <div className="w-24 h-24 bg-[#059669] rounded-full flex items-center justify-center mx-auto mb-6">
@@ -1431,7 +1720,7 @@
                             every aspect of your campaign. Here's your complete brand profile.
                         </p>
                     </div>
- 
+
                     {/* Summary Cards */}
                     <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-6">
                         {/* Candidate Info */}
@@ -1448,7 +1737,7 @@
                                 <div><strong>Backgrounds:</strong> {formData.backgrounds.map(b => PROFESSIONAL_BACKGROUNDS.find(bg => bg.id === b)?.name).join(', ')}</div>
                             </div>
                         </div>
- 
+
                         {/* Brand Identity */}
                         <div className="bg-white p-8 rounded-2xl shadow-lg">
                             <h3 className="text-2xl font-bold mb-6 flex items-center">
@@ -1469,7 +1758,7 @@
                                 </div>
                             </div>
                         </div>
- 
+
                         {/* Policy Priorities */}
                         <div className="bg-white p-8 rounded-2xl shadow-lg">
                             <h3 className="text-2xl font-bold mb-6 flex items-center">
@@ -1485,7 +1774,7 @@
                                 ))}
                             </div>
                         </div>
- 
+
                         {/* Next Steps */}
                         <div className="bg-gradient-to-br from-[#a61e22] to-[#8a1a1d] p-8 rounded-2xl shadow-lg text-white">
                             <h3 className="text-2xl font-bold mb-6 flex items-center">
@@ -1512,7 +1801,7 @@
                             </ul>
                         </div>
                     </div>
- 
+
                     {/* Download Buttons */}
                     <div className="max-w-4xl mx-auto flex flex-col md:flex-row gap-4 justify-center">
                         <button
@@ -1536,7 +1825,7 @@
                             🖨️ Print Summary
                         </button>
                     </div>
- 
+
                     {/* Back Button */}
                     <div className="flex justify-center pt-8">
                         <button
@@ -1553,7 +1842,7 @@
                 </div>
             );
         }
- 
+
         // Render App
         ReactDOM.render(<App />, document.getElementById('root'));
     </script>
