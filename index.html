@@ -133,6 +133,32 @@
                 radial-gradient(circle at 20% 30%, rgba(166, 30, 34, 0.05) 0%, transparent 50%),
                 radial-gradient(circle at 80% 70%, rgba(166, 30, 34, 0.05) 0%, transparent 50%);
         }
+ 
+        @media print {
+            body {
+                background: white;
+            }
+            
+            .no-print {
+                display: none !important;
+            }
+            
+            .print-only {
+                display: block !important;
+            }
+            
+            .page-break {
+                page-break-after: always;
+            }
+            
+            @page {
+                margin: 1cm;
+            }
+        }
+        
+        .print-only {
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -372,7 +398,7 @@
                 { num: 3, name: 'Brand Core' },
                 { num: 4, name: 'Direction' },
                 { num: 5, name: 'Colors' },
-                { num: 6, name: 'Visual' },
+                { num: 6, name: 'Typography' },
                 { num: 7, name: 'Copy' },
                 { num: 8, name: 'Collateral' },
                 { num: 9, name: 'Review' }
@@ -1370,7 +1396,7 @@
                             }}
                             className="px-8 py-4 rounded-lg font-bold text-lg bg-[#a61e22] text-white hover:bg-[#8a1a1d] shadow-lg transition-all"
                         >
-                            Continue to Visual Identity →
+                            Continue to Colors & Typography →
                         </button>
                     </div>
                 </div>
@@ -1399,16 +1425,15 @@
             };
  
             const colors = getColors();
-            const logoTypes = ['Wordmark', 'Badge/Emblem', 'Symbol+Text', 'Monogram', 'Campaign Sign'];
  
             return (
                 <div className="space-y-12 fade-in-up">
                     <div className="text-center space-y-4">
                         <h2 className="text-5xl font-bold text-black" style={{ fontFamily: 'Bebas Neue' }}>
-                            YOUR <span className="text-[#a61e22]">VISUAL IDENTITY</span>
+                            COLORS & <span className="text-[#a61e22]">TYPOGRAPHY</span>
                         </h2>
                         <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-                            Here's how your brand comes to life visually. This is your identity.
+                            Your brand's visual foundation: the colors and fonts that will define your campaign.
                         </p>
                     </div>
  
@@ -1509,31 +1534,6 @@
                                         Leadership you can trust. Results you can see.
                                     </div>
                                 </div>
-                            </div>
-                        </div>
- 
-                        {/* Logo Variations */}
-                        <div className="bg-white p-8 rounded-2xl shadow-lg">
-                            <h3 className="text-2xl font-bold mb-6" style={{ fontFamily: selectedBrandCore.fontPrimary }}>
-                                Logo Concepts
-                            </h3>
-                            <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
-                                {logoTypes.map((type, idx) => (
-                                    <div key={idx} className="border-2 border-gray-200 rounded-lg p-6 text-center">
-                                        <div className="h-24 flex items-center justify-center mb-3">
-                                            <div 
-                                                className="text-3xl font-bold"
-                                                style={{ 
-                                                    fontFamily: selectedBrandCore.fontPrimary,
-                                                    color: colors.primary 
-                                                }}
-                                            >
-                                                {formData.fullName?.split(' ')[0] || 'LOGO'}
-                                            </div>
-                                        </div>
-                                        <div className="text-sm font-semibold text-gray-600">{type}</div>
-                                    </div>
-                                ))}
                             </div>
                         </div>
                     </div>
@@ -1798,14 +1798,272 @@
                 return () => clearTimeout(timer);
             }, []);
  
-            const handleDownload = (type) => {
-                const data = JSON.stringify(formData, null, 2);
-                const blob = new Blob([data], { type: 'application/json' });
-                const url = URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = `${formData.fullName.replace(/\s+/g, '-')}-brand-profile.json`;
-                a.click();
+            const handleDownload = () => {
+                generatePDF();
+            };
+ 
+            const generatePDF = () => {
+                const colors = formData.useRecommended || !formData.colorPalette 
+                    ? {
+                        primary: selectedBrandCore?.color,
+                        secondary: '#1e3a8a',
+                        tertiary: '#991b1b',
+                        accent: '#dc2626',
+                        neutralDark: '#000000',
+                        neutralLight: '#f9f8f6'
+                    }
+                    : formData.colorPalette;
+ 
+                const printWindow = window.open('', '_blank');
+                printWindow.document.write(`
+                    <!DOCTYPE html>
+                    <html>
+                    <head>
+                        <title>${formData.fullName} - Brand Profile</title>
+                        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+                        <style>
+                            * { margin: 0; padding: 0; box-sizing: border-box; }
+                            body {
+                                font-family: 'Inter', sans-serif;
+                                line-height: 1.6;
+                                color: #1f2937;
+                                background: white;
+                                padding: 40px;
+                            }
+                            .header {
+                                text-align: center;
+                                margin-bottom: 40px;
+                                padding-bottom: 30px;
+                                border-bottom: 3px solid #a61e22;
+                            }
+                            .logo {
+                                font-size: 48px;
+                                font-weight: bold;
+                                color: #a61e22;
+                                margin-bottom: 10px;
+                            }
+                            .tagline {
+                                color: #6b7280;
+                                font-style: italic;
+                            }
+                            h1 {
+                                font-size: 36px;
+                                color: #000;
+                                margin: 30px 0 20px;
+                                padding-top: 20px;
+                            }
+                            h2 {
+                                font-size: 24px;
+                                color: #a61e22;
+                                margin: 25px 0 15px;
+                                padding-bottom: 8px;
+                                border-bottom: 2px solid #e5e7eb;
+                            }
+                            h3 {
+                                font-size: 18px;
+                                color: #374151;
+                                margin: 20px 0 10px;
+                            }
+                            .section {
+                                margin-bottom: 35px;
+                            }
+                            .info-grid {
+                                display: grid;
+                                grid-template-columns: 200px 1fr;
+                                gap: 12px;
+                                margin-bottom: 15px;
+                            }
+                            .label {
+                                font-weight: 600;
+                                color: #6b7280;
+                            }
+                            .value {
+                                color: #1f2937;
+                            }
+                            .color-grid {
+                                display: grid;
+                                grid-template-columns: repeat(6, 1fr);
+                                gap: 15px;
+                                margin: 20px 0;
+                            }
+                            .color-swatch {
+                                text-align: center;
+                            }
+                            .color-box {
+                                height: 80px;
+                                border: 2px solid #e5e7eb;
+                                border-radius: 8px;
+                                margin-bottom: 8px;
+                            }
+                            .color-label {
+                                font-size: 12px;
+                                font-weight: 600;
+                                color: #374151;
+                                margin-bottom: 4px;
+                            }
+                            .color-hex {
+                                font-size: 11px;
+                                font-family: monospace;
+                                color: #6b7280;
+                            }
+                            .badge {
+                                display: inline-block;
+                                padding: 6px 12px;
+                                background: #f3f4f6;
+                                color: #374151;
+                                border-radius: 6px;
+                                font-size: 14px;
+                                font-weight: 500;
+                                margin-right: 8px;
+                                margin-bottom: 8px;
+                            }
+                            .page-break {
+                                page-break-after: always;
+                            }
+                            @media print {
+                                body { padding: 20px; }
+                                .page-break { page-break-after: always; }
+                            }
+                        </style>
+                    </head>
+                    <body>
+                        <div class="header">
+                            <div class="logo">OPERATION 1776</div>
+                            <div class="tagline">Brand Discovery Profile</div>
+                        </div>
+ 
+                        <h1>${formData.fullName}</h1>
+                        <p style="font-size: 18px; color: #6b7280; margin-bottom: 40px;">
+                            Campaign Brand Identity Guide
+                        </p>
+ 
+                        <div class="section">
+                            <h2>Candidate Information</h2>
+                            <div class="info-grid">
+                                <div class="label">Full Name:</div>
+                                <div class="value">${formData.fullName}</div>
+                                
+                                <div class="label">Office Sought:</div>
+                                <div class="value">${OFFICES.find(o => o.id === formData.office)?.name || ''}</div>
+                                
+                                <div class="label">Election Year:</div>
+                                <div class="value">${formData.electionYear}</div>
+                                
+                                <div class="label">Candidate Type:</div>
+                                <div class="value">${formData.candidateType === 'first' ? 'First-Time Candidate' : formData.candidateType === 'incumbent' ? 'Incumbent' : 'Challenger'}</div>
+                                
+                                <div class="label">Party:</div>
+                                <div class="value">${formData.party}</div>
+                            </div>
+                        </div>
+ 
+                        <div class="section">
+                            <h2>Professional Background</h2>
+                            <div>
+                                ${formData.backgrounds.map(b => 
+                                    `<span class="badge">${PROFESSIONAL_BACKGROUNDS.find(bg => bg.id === b)?.name}</span>`
+                                ).join('')}
+                            </div>
+                        </div>
+ 
+                        <div class="section">
+                            <h2>Top Policy Priorities</h2>
+                            <ol style="margin-left: 20px;">
+                                ${formData.policyPriorities.map(p => 
+                                    `<li style="margin-bottom: 8px;">${POLICY_PRIORITIES.find(pr => pr.id === p)?.name}</li>`
+                                ).join('')}
+                            </ol>
+                        </div>
+ 
+                        ${formData.personalStory ? `
+                        <div class="section">
+                            <h2>Personal Story</h2>
+                            <p style="line-height: 1.8;">${formData.personalStory}</p>
+                        </div>
+                        ` : ''}
+ 
+                        <div class="page-break"></div>
+ 
+                        <div class="section">
+                            <h2>Brand Identity</h2>
+                            
+                            <h3>Brand Core</h3>
+                            <div class="info-grid">
+                                <div class="label">Core Identity:</div>
+                                <div class="value">${selectedBrandCore?.name}</div>
+                                
+                                <div class="label">Direction:</div>
+                                <div class="value">${selectedBrandCore?.subDirections.find(s => s.id === formData.subDirection)?.name}</div>
+                                
+                                <div class="label">Positioning:</div>
+                                <div class="value">${selectedBrandCore?.positioning}</div>
+                            </div>
+                        </div>
+ 
+                        <div class="section">
+                            <h2>Color Palette</h2>
+                            <div class="color-grid">
+                                <div class="color-swatch">
+                                    <div class="color-box" style="background-color: ${colors.primary};"></div>
+                                    <div class="color-label">Primary</div>
+                                    <div class="color-hex">${colors.primary}</div>
+                                </div>
+                                <div class="color-swatch">
+                                    <div class="color-box" style="background-color: ${colors.secondary};"></div>
+                                    <div class="color-label">Secondary</div>
+                                    <div class="color-hex">${colors.secondary}</div>
+                                </div>
+                                <div class="color-swatch">
+                                    <div class="color-box" style="background-color: ${colors.tertiary};"></div>
+                                    <div class="color-label">Tertiary</div>
+                                    <div class="color-hex">${colors.tertiary}</div>
+                                </div>
+                                <div class="color-swatch">
+                                    <div class="color-box" style="background-color: ${colors.accent};"></div>
+                                    <div class="color-label">Accent</div>
+                                    <div class="color-hex">${colors.accent}</div>
+                                </div>
+                                <div class="color-swatch">
+                                    <div class="color-box" style="background-color: ${colors.neutralDark};"></div>
+                                    <div class="color-label">Dark</div>
+                                    <div class="color-hex">${colors.neutralDark}</div>
+                                </div>
+                                <div class="color-swatch">
+                                    <div class="color-box" style="background-color: ${colors.neutralLight}; border: 1px solid #e5e7eb;"></div>
+                                    <div class="color-label">Light</div>
+                                    <div class="color-hex">${colors.neutralLight}</div>
+                                </div>
+                            </div>
+                        </div>
+ 
+                        <div class="section">
+                            <h2>Typography</h2>
+                            <div class="info-grid">
+                                <div class="label">Primary Font:</div>
+                                <div class="value">${selectedBrandCore?.fontPrimary} (Headlines)</div>
+                                
+                                <div class="label">Secondary Font:</div>
+                                <div class="value">${selectedBrandCore?.fontSecondary} (Body)</div>
+                            </div>
+                        </div>
+ 
+                        <div style="margin-top: 60px; padding-top: 30px; border-top: 2px solid #e5e7eb; text-align: center; color: #6b7280; font-size: 14px;">
+                            <p>Generated by Operation 1776 Brand Discovery Tool</p>
+                            <p style="margin-top: 8px;">Rooted in Freedom. Driven by Purpose.</p>
+                        </div>
+                    </body>
+                    </html>
+                `);
+                printWindow.document.close();
+                
+                // Wait for content to load, then print
+                setTimeout(() => {
+                    printWindow.print();
+                }, 500);
+            };
+ 
+            const handlePrint = () => {
+                generatePDF();
             };
  
             return (
@@ -1931,21 +2189,21 @@
                             type="button"
                             onClick={(e) => {
                                 e.preventDefault();
-                                handleDownload('json');
+                                handleDownload();
                             }}
                             className="px-8 py-4 bg-[#a61e22] text-white rounded-lg font-bold text-lg hover:bg-[#8a1a1d] shadow-lg transition-all"
                         >
-                            📥 Download Brand Profile
+                            📥 Download Brand Profile (PDF)
                         </button>
                         <button
                             type="button"
                             onClick={(e) => {
                                 e.preventDefault();
-                                window.print();
+                                handlePrint();
                             }}
                             className="px-8 py-4 bg-black text-white rounded-lg font-bold text-lg hover:bg-gray-800 shadow-lg transition-all"
                         >
-                            🖨️ Print Summary
+                            🖨️ Print Brand Profile
                         </button>
                     </div>
  
@@ -1971,3 +2229,4 @@
     </script>
 </body>
 </html>
+ 
