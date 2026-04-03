@@ -1820,16 +1820,17 @@
                     <html>
                     <head>
                         <title>${formData.fullName} - Brand Profile</title>
-                        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+                        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Bebas+Neue&display=swap" rel="stylesheet">
                         <style>
                             * { margin: 0; padding: 0; box-sizing: border-box; }
+                            
                             body {
                                 font-family: 'Inter', sans-serif;
                                 line-height: 1.6;
                                 color: #1f2937;
-                                background: white;
-                                padding: 40px;
+                                background: #ffffff;
                             }
+                            
                             .print-instruction {
                                 position: fixed;
                                 top: 20px;
@@ -1842,231 +1843,469 @@
                                 box-shadow: 0 4px 12px rgba(0,0,0,0.15);
                                 z-index: 9999;
                             }
-                            .header {
-                                text-align: center;
-                                margin-bottom: 40px;
-                                padding-bottom: 30px;
-                                border-bottom: 3px solid #a61e22;
+                            
+                            /* Cover Page */
+                            .cover-page {
+                                height: 100vh;
+                                display: flex;
+                                flex-direction: column;
+                                justify-content: center;
+                                align-items: center;
+                                background: linear-gradient(135deg, #000000 0%, #1f2937 100%);
+                                color: white;
+                                position: relative;
+                                overflow: hidden;
+                                page-break-after: always;
                             }
-                            .logo {
-                                font-size: 48px;
+                            
+                            .cover-bg-pattern {
+                                position: absolute;
+                                top: 0;
+                                left: 0;
+                                right: 0;
+                                bottom: 0;
+                                opacity: 0.1;
+                                background-image: 
+                                    repeating-linear-gradient(0deg, transparent, transparent 50px, #a61e22 50px, #a61e22 51px),
+                                    repeating-linear-gradient(90deg, transparent, transparent 50px, #a61e22 50px, #a61e22 51px);
+                            }
+                            
+                            .cover-content {
+                                position: relative;
+                                z-index: 10;
+                                text-align: center;
+                                padding: 60px;
+                            }
+                            
+                            .op1776-logo {
+                                font-family: 'Bebas Neue', sans-serif;
+                                font-size: 120px;
                                 font-weight: bold;
                                 color: #a61e22;
+                                letter-spacing: 4px;
+                                margin-bottom: 20px;
+                                text-shadow: 0 4px 20px rgba(166, 30, 34, 0.5);
+                            }
+                            
+                            .cover-subtitle {
+                                font-size: 24px;
+                                color: #9ca3af;
+                                margin-bottom: 80px;
+                                font-weight: 300;
+                                letter-spacing: 2px;
+                            }
+                            
+                            .candidate-name-cover {
+                                font-size: 72px;
+                                font-weight: 900;
+                                color: white;
+                                margin-bottom: 20px;
+                                font-family: 'Bebas Neue', sans-serif;
+                                letter-spacing: 2px;
+                            }
+                            
+                            .candidate-office-cover {
+                                font-size: 32px;
+                                color: #a61e22;
+                                font-weight: 600;
                                 margin-bottom: 10px;
                             }
-                            .tagline {
-                                color: #6b7280;
-                                font-style: italic;
-                            }
-                            h1 {
-                                font-size: 36px;
-                                color: #000;
-                                margin: 30px 0 20px;
-                                padding-top: 20px;
-                            }
-                            h2 {
+                            
+                            .candidate-year-cover {
                                 font-size: 24px;
-                                color: #a61e22;
-                                margin: 25px 0 15px;
-                                padding-bottom: 8px;
-                                border-bottom: 2px solid #e5e7eb;
-                            }
-                            h3 {
-                                font-size: 18px;
-                                color: #374151;
-                                margin: 20px 0 10px;
-                            }
-                            .section {
-                                margin-bottom: 35px;
-                            }
-                            .info-grid {
-                                display: grid;
-                                grid-template-columns: 200px 1fr;
-                                gap: 12px;
-                                margin-bottom: 15px;
-                            }
-                            .label {
-                                font-weight: 600;
                                 color: #6b7280;
+                                font-weight: 400;
                             }
-                            .value {
+                            
+                            /* Content Pages */
+                            .content-page {
+                                padding: 60px 80px;
+                                min-height: 100vh;
+                            }
+                            
+                            .page-header {
+                                border-bottom: 4px solid #a61e22;
+                                padding-bottom: 20px;
+                                margin-bottom: 50px;
+                            }
+                            
+                            .page-title {
+                                font-family: 'Bebas Neue', sans-serif;
+                                font-size: 56px;
+                                color: #000000;
+                                letter-spacing: 2px;
+                            }
+                            
+                            .section-title {
+                                font-family: 'Bebas Neue', sans-serif;
+                                font-size: 36px;
+                                color: #a61e22;
+                                margin: 40px 0 25px;
+                                letter-spacing: 1px;
+                            }
+                            
+                            .info-row {
+                                display: flex;
+                                padding: 15px 0;
+                                border-bottom: 1px solid #e5e7eb;
+                            }
+                            
+                            .info-label {
+                                width: 250px;
+                                font-weight: 700;
+                                color: #6b7280;
+                                font-size: 14px;
+                                text-transform: uppercase;
+                                letter-spacing: 1px;
+                            }
+                            
+                            .info-value {
+                                flex: 1;
                                 color: #1f2937;
+                                font-size: 16px;
+                                font-weight: 500;
                             }
-                            .color-grid {
+                            
+                            /* Color Palette Showcase */
+                            .color-showcase {
                                 display: grid;
-                                grid-template-columns: repeat(6, 1fr);
-                                gap: 15px;
-                                margin: 20px 0;
+                                grid-template-columns: repeat(3, 1fr);
+                                gap: 30px;
+                                margin: 40px 0;
                             }
-                            .color-swatch {
+                            
+                            .color-card {
                                 text-align: center;
                             }
-                            .color-box {
-                                height: 80px;
-                                border: 2px solid #e5e7eb;
-                                border-radius: 8px;
-                                margin-bottom: 8px;
+                            
+                            .color-swatch-large {
+                                height: 180px;
+                                border-radius: 12px;
+                                margin-bottom: 15px;
+                                box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+                                position: relative;
+                                overflow: hidden;
                             }
-                            .color-label {
-                                font-size: 12px;
-                                font-weight: 600;
-                                color: #374151;
-                                margin-bottom: 4px;
+                            
+                            .color-swatch-large::after {
+                                content: '';
+                                position: absolute;
+                                top: 0;
+                                left: 0;
+                                right: 0;
+                                bottom: 0;
+                                background: linear-gradient(135deg, transparent 0%, rgba(0,0,0,0.1) 100%);
                             }
+                            
+                            .color-name {
+                                font-weight: 700;
+                                font-size: 18px;
+                                color: #1f2937;
+                                margin-bottom: 5px;
+                                text-transform: uppercase;
+                                letter-spacing: 1px;
+                            }
+                            
                             .color-hex {
-                                font-size: 11px;
-                                font-family: monospace;
+                                font-family: 'Courier New', monospace;
+                                font-size: 16px;
                                 color: #6b7280;
+                                font-weight: 600;
                             }
-                            .badge {
-                                display: inline-block;
-                                padding: 6px 12px;
-                                background: #f3f4f6;
-                                color: #374151;
-                                border-radius: 6px;
+                            
+                            /* Brand Identity Box */
+                            .brand-box {
+                                background: linear-gradient(135deg, ${colors.primary} 0%, ${colors.tertiary} 100%);
+                                padding: 50px;
+                                border-radius: 16px;
+                                color: white;
+                                margin: 40px 0;
+                                box-shadow: 0 12px 40px rgba(0,0,0,0.2);
+                            }
+                            
+                            .brand-core-name {
+                                font-family: 'Bebas Neue', sans-serif;
+                                font-size: 64px;
+                                margin-bottom: 15px;
+                                letter-spacing: 2px;
+                            }
+                            
+                            .brand-direction {
+                                font-size: 28px;
+                                margin-bottom: 25px;
+                                font-weight: 300;
+                                opacity: 0.9;
+                            }
+                            
+                            .brand-positioning {
+                                font-size: 18px;
+                                line-height: 1.8;
+                                opacity: 0.95;
+                                font-weight: 400;
+                            }
+                            
+                            /* Typography Showcase */
+                            .typography-demo {
+                                background: #f9fafb;
+                                padding: 50px;
+                                border-radius: 16px;
+                                margin: 40px 0;
+                            }
+                            
+                            .font-showcase {
+                                margin: 30px 0;
+                            }
+                            
+                            .font-label {
                                 font-size: 14px;
-                                font-weight: 500;
-                                margin-right: 8px;
-                                margin-bottom: 8px;
+                                font-weight: 700;
+                                color: #6b7280;
+                                margin-bottom: 15px;
+                                text-transform: uppercase;
+                                letter-spacing: 1px;
                             }
+                            
+                            .font-primary-demo {
+                                font-family: '${selectedBrandCore?.fontPrimary}', sans-serif;
+                                font-size: 72px;
+                                font-weight: 700;
+                                color: ${colors.primary};
+                                line-height: 1.1;
+                                margin-bottom: 10px;
+                            }
+                            
+                            .font-secondary-demo {
+                                font-size: 24px;
+                                line-height: 1.6;
+                                color: #374151;
+                            }
+                            
+                            /* Policy Badges */
+                            .policy-grid {
+                                display: grid;
+                                grid-template-columns: repeat(3, 1fr);
+                                gap: 15px;
+                                margin: 30px 0;
+                            }
+                            
+                            .policy-badge {
+                                background: ${colors.primary};
+                                color: white;
+                                padding: 15px 20px;
+                                border-radius: 8px;
+                                font-weight: 600;
+                                text-align: center;
+                                font-size: 15px;
+                            }
+                            
+                            .policy-number {
+                                display: inline-block;
+                                width: 28px;
+                                height: 28px;
+                                background: white;
+                                color: ${colors.primary};
+                                border-radius: 50%;
+                                text-align: center;
+                                line-height: 28px;
+                                margin-right: 10px;
+                                font-weight: 700;
+                                font-size: 14px;
+                            }
+                            
+                            /* Background Badges */
+                            .background-badges {
+                                display: flex;
+                                flex-wrap: wrap;
+                                gap: 12px;
+                                margin: 30px 0;
+                            }
+                            
+                            .background-badge {
+                                background: #f3f4f6;
+                                border: 2px solid ${colors.primary};
+                                color: #1f2937;
+                                padding: 12px 24px;
+                                border-radius: 25px;
+                                font-weight: 600;
+                                font-size: 15px;
+                            }
+                            
+                            /* Personal Story Box */
+                            .story-box {
+                                background: #f9fafb;
+                                border-left: 6px solid ${colors.primary};
+                                padding: 40px;
+                                margin: 40px 0;
+                                border-radius: 0 12px 12px 0;
+                                font-size: 17px;
+                                line-height: 1.9;
+                                color: #374151;
+                                font-style: italic;
+                            }
+                            
                             .page-break {
                                 page-break-after: always;
                             }
+                            
+                            /* Footer */
+                            .page-footer {
+                                margin-top: 80px;
+                                padding-top: 30px;
+                                border-top: 2px solid #e5e7eb;
+                                text-align: center;
+                                color: #9ca3af;
+                                font-size: 13px;
+                            }
+                            
                             @media print {
-                                body { padding: 20px; }
-                                .page-break { page-break-after: always; }
+                                body { padding: 0; margin: 0; }
                                 .print-instruction { display: none !important; }
+                                .page-break { page-break-after: always; }
+                                @page { margin: 0; size: letter; }
                             }
                         </style>
                     </head>
                     <body>
                         <div class="print-instruction">
-                            💾 Use Ctrl+P (or Cmd+P) and save as PDF
+                            💾 Press Ctrl+P (Cmd+P on Mac) → Save as PDF
                         </div>
                         
-                        <div class="header">
-                            <div class="logo">OPERATION 1776</div>
-                            <div class="tagline">Brand Discovery Profile</div>
-                        </div>
- 
-                        <h1>${formData.fullName}</h1>
-                        <p style="font-size: 18px; color: #6b7280; margin-bottom: 40px;">
-                            Campaign Brand Identity Guide
-                        </p>
- 
-                        <div class="section">
-                            <h2>Candidate Information</h2>
-                            <div class="info-grid">
-                                <div class="label">Full Name:</div>
-                                <div class="value">${formData.fullName}</div>
-                                
-                                <div class="label">Office Sought:</div>
-                                <div class="value">${OFFICES.find(o => o.id === formData.office)?.name || ''}</div>
-                                
-                                <div class="label">Election Year:</div>
-                                <div class="value">${formData.electionYear}</div>
-                                
-                                <div class="label">Candidate Type:</div>
-                                <div class="value">${formData.candidateType === 'first' ? 'First-Time Candidate' : formData.candidateType === 'incumbent' ? 'Incumbent' : 'Challenger'}</div>
-                                
-                                <div class="label">Party:</div>
-                                <div class="value">${formData.party}</div>
+                        <!-- COVER PAGE -->
+                        <div class="cover-page">
+                            <div class="cover-bg-pattern"></div>
+                            <div class="cover-content">
+                                <div class="op1776-logo">OPERATION 1776</div>
+                                <div class="cover-subtitle">CAMPAIGN BRAND IDENTITY GUIDE</div>
+                                <div class="candidate-name-cover">${formData.fullName}</div>
+                                <div class="candidate-office-cover">${OFFICES.find(o => o.id === formData.office)?.name || ''}</div>
+                                <div class="candidate-year-cover">${formData.electionYear} Election</div>
                             </div>
                         </div>
  
-                        <div class="section">
-                            <h2>Professional Background</h2>
-                            <div>
+                        <!-- CANDIDATE PROFILE PAGE -->
+                        <div class="content-page">
+                            <div class="page-header">
+                                <div class="page-title">CANDIDATE PROFILE</div>
+                            </div>
+ 
+                            <div class="info-row">
+                                <div class="info-label">Candidate Name</div>
+                                <div class="info-value">${formData.fullName}</div>
+                            </div>
+                            <div class="info-row">
+                                <div class="info-label">Office Sought</div>
+                                <div class="info-value">${OFFICES.find(o => o.id === formData.office)?.name || ''}</div>
+                            </div>
+                            <div class="info-row">
+                                <div class="info-label">Election Year</div>
+                                <div class="info-value">${formData.electionYear}</div>
+                            </div>
+                            <div class="info-row">
+                                <div class="info-label">Candidate Type</div>
+                                <div class="info-value">${formData.candidateType === 'first' ? 'First-Time Candidate' : formData.candidateType === 'incumbent' ? 'Incumbent' : 'Challenger'}</div>
+                            </div>
+                            <div class="info-row">
+                                <div class="info-label">Party Affiliation</div>
+                                <div class="info-value">${formData.party}</div>
+                            </div>
+ 
+                            <div class="section-title">Professional Background</div>
+                            <div class="background-badges">
                                 ${formData.backgrounds.map(b => 
-                                    `<span class="badge">${PROFESSIONAL_BACKGROUNDS.find(bg => bg.id === b)?.name}</span>`
+                                    `<div class="background-badge">${PROFESSIONAL_BACKGROUNDS.find(bg => bg.id === b)?.name}</div>`
                                 ).join('')}
                             </div>
-                        </div>
  
-                        <div class="section">
-                            <h2>Top Policy Priorities</h2>
-                            <ol style="margin-left: 20px;">
-                                ${formData.policyPriorities.map(p => 
-                                    `<li style="margin-bottom: 8px;">${POLICY_PRIORITIES.find(pr => pr.id === p)?.name}</li>`
+                            <div class="section-title">Top Policy Priorities</div>
+                            <div class="policy-grid">
+                                ${formData.policyPriorities.map((p, idx) => 
+                                    `<div class="policy-badge">
+                                        <span class="policy-number">${idx + 1}</span>
+                                        ${POLICY_PRIORITIES.find(pr => pr.id === p)?.name}
+                                    </div>`
                                 ).join('')}
-                            </ol>
-                        </div>
+                            </div>
  
-                        ${formData.personalStory ? `
-                        <div class="section">
-                            <h2>Personal Story</h2>
-                            <p style="line-height: 1.8;">${formData.personalStory}</p>
+                            ${formData.personalStory ? `
+                            <div class="section-title">Personal Story</div>
+                            <div class="story-box">
+                                ${formData.personalStory}
+                            </div>
+                            ` : ''}
                         </div>
-                        ` : ''}
  
                         <div class="page-break"></div>
  
-                        <div class="section">
-                            <h2>Brand Identity</h2>
-                            
-                            <h3>Brand Core</h3>
-                            <div class="info-grid">
-                                <div class="label">Core Identity:</div>
-                                <div class="value">${selectedBrandCore?.name}</div>
-                                
-                                <div class="label">Direction:</div>
-                                <div class="value">${selectedBrandCore?.subDirections.find(s => s.id === formData.subDirection)?.name}</div>
-                                
-                                <div class="label">Positioning:</div>
-                                <div class="value">${selectedBrandCore?.positioning}</div>
+                        <!-- BRAND IDENTITY PAGE -->
+                        <div class="content-page">
+                            <div class="page-header">
+                                <div class="page-title">BRAND IDENTITY</div>
+                            </div>
+ 
+                            <div class="brand-box">
+                                <div class="brand-core-name">${selectedBrandCore?.name}</div>
+                                <div class="brand-direction">${selectedBrandCore?.subDirections.find(s => s.id === formData.subDirection)?.name}</div>
+                                <div class="brand-positioning">${selectedBrandCore?.positioning}</div>
+                            </div>
+ 
+                            <div class="section-title">Typography System</div>
+                            <div class="typography-demo">
+                                <div class="font-showcase">
+                                    <div class="font-label">Primary Font (Headlines) — ${selectedBrandCore?.fontPrimary}</div>
+                                    <div class="font-primary-demo">${formData.fullName}</div>
+                                </div>
+                                <div class="font-showcase">
+                                    <div class="font-label">Secondary Font (Body Copy) — ${selectedBrandCore?.fontSecondary}</div>
+                                    <div class="font-secondary-demo">Leadership you can trust. Results you can see. A bold vision for America's future.</div>
+                                </div>
                             </div>
                         </div>
  
-                        <div class="section">
-                            <h2>Color Palette</h2>
-                            <div class="color-grid">
-                                <div class="color-swatch">
-                                    <div class="color-box" style="background-color: ${colors.primary};"></div>
-                                    <div class="color-label">Primary</div>
+                        <div class="page-break"></div>
+ 
+                        <!-- COLOR PALETTE PAGE -->
+                        <div class="content-page">
+                            <div class="page-header">
+                                <div class="page-title">COLOR PALETTE</div>
+                            </div>
+ 
+                            <div class="color-showcase">
+                                <div class="color-card">
+                                    <div class="color-swatch-large" style="background-color: ${colors.primary};"></div>
+                                    <div class="color-name">Primary</div>
                                     <div class="color-hex">${colors.primary}</div>
                                 </div>
-                                <div class="color-swatch">
-                                    <div class="color-box" style="background-color: ${colors.secondary};"></div>
-                                    <div class="color-label">Secondary</div>
+                                <div class="color-card">
+                                    <div class="color-swatch-large" style="background-color: ${colors.secondary};"></div>
+                                    <div class="color-name">Secondary</div>
                                     <div class="color-hex">${colors.secondary}</div>
                                 </div>
-                                <div class="color-swatch">
-                                    <div class="color-box" style="background-color: ${colors.tertiary};"></div>
-                                    <div class="color-label">Tertiary</div>
+                                <div class="color-card">
+                                    <div class="color-swatch-large" style="background-color: ${colors.tertiary};"></div>
+                                    <div class="color-name">Tertiary</div>
                                     <div class="color-hex">${colors.tertiary}</div>
                                 </div>
-                                <div class="color-swatch">
-                                    <div class="color-box" style="background-color: ${colors.accent};"></div>
-                                    <div class="color-label">Accent</div>
+                                <div class="color-card">
+                                    <div class="color-swatch-large" style="background-color: ${colors.accent};"></div>
+                                    <div class="color-name">Accent</div>
                                     <div class="color-hex">${colors.accent}</div>
                                 </div>
-                                <div class="color-swatch">
-                                    <div class="color-box" style="background-color: ${colors.neutralDark};"></div>
-                                    <div class="color-label">Dark</div>
+                                <div class="color-card">
+                                    <div class="color-swatch-large" style="background-color: ${colors.neutralDark};"></div>
+                                    <div class="color-name">Dark</div>
                                     <div class="color-hex">${colors.neutralDark}</div>
                                 </div>
-                                <div class="color-swatch">
-                                    <div class="color-box" style="background-color: ${colors.neutralLight}; border: 1px solid #e5e7eb;"></div>
-                                    <div class="color-label">Light</div>
+                                <div class="color-card">
+                                    <div class="color-swatch-large" style="background-color: ${colors.neutralLight}; border: 2px solid #e5e7eb;"></div>
+                                    <div class="color-name">Light</div>
                                     <div class="color-hex">${colors.neutralLight}</div>
                                 </div>
                             </div>
-                        </div>
  
-                        <div class="section">
-                            <h2>Typography</h2>
-                            <div class="info-grid">
-                                <div class="label">Primary Font:</div>
-                                <div class="value">${selectedBrandCore?.fontPrimary} (Headlines)</div>
-                                
-                                <div class="label">Secondary Font:</div>
-                                <div class="value">${selectedBrandCore?.fontSecondary} (Body)</div>
+                            <div class="page-footer">
+                                <p style="font-weight: 600; color: #1f2937; font-size: 15px; margin-bottom: 8px;">Generated by Operation 1776 Brand Discovery Tool</p>
+                                <p style="font-style: italic;">Rooted in Freedom. Driven by Purpose.</p>
                             </div>
-                        </div>
- 
-                        <div style="margin-top: 60px; padding-top: 30px; border-top: 2px solid #e5e7eb; text-align: center; color: #6b7280; font-size: 14px;">
-                            <p>Generated by Operation 1776 Brand Discovery Tool</p>
-                            <p style="margin-top: 8px;">Rooted in Freedom. Driven by Purpose.</p>
                         </div>
                         
                         <script>
@@ -2249,3 +2488,4 @@
     </script>
 </body>
 </html>
+ 
