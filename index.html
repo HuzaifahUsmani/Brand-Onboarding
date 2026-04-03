@@ -23,12 +23,12 @@
             background: #f9f8f6;
             overflow-x: hidden;
         }
-
+ 
         .distressed-text {
             position: relative;
             display: inline-block;
         }
-
+ 
         .distressed-text::after {
             content: attr(data-text);
             position: absolute;
@@ -37,7 +37,7 @@
             z-index: -1;
             text-shadow: 2px 2px 0px rgba(0,0,0,0.1);
         }
-
+ 
         @keyframes fadeInUp {
             from {
                 opacity: 0;
@@ -48,7 +48,7 @@
                 transform: translateY(0);
             }
         }
-
+ 
         @keyframes slideIn {
             from {
                 opacity: 0;
@@ -59,7 +59,7 @@
                 transform: translateX(0);
             }
         }
-
+ 
         @keyframes pulse {
             0%, 100% {
                 opacity: 1;
@@ -68,7 +68,7 @@
                 opacity: 0.5;
             }
         }
-
+ 
         @keyframes confetti {
             0% {
                 transform: translateY(0) rotateZ(0deg);
@@ -79,55 +79,55 @@
                 opacity: 0;
             }
         }
-
+ 
         .fade-in-up {
             animation: fadeInUp 0.6s ease-out forwards;
         }
-
+ 
         .slide-in {
             animation: slideIn 0.4s ease-out forwards;
         }
-
+ 
         .card-hover {
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
-
+ 
         .card-hover:hover {
             transform: translateY(-8px);
             box-shadow: 0 20px 40px rgba(166, 30, 34, 0.2);
         }
-
+ 
         .progress-step {
             transition: all 0.3s ease;
         }
-
+ 
         .progress-step.active {
             transform: scale(1.1);
         }
-
+ 
         .confetti-piece {
             position: fixed;
             width: 10px;
             height: 10px;
             animation: confetti 3s ease-out forwards;
         }
-
+ 
         .brand-commander { --brand-color: #1e3a8a; }
         .brand-patriot { --brand-color: #a61e22; }
         .brand-reformer { --brand-color: #ea580c; }
         .brand-community { --brand-color: #059669; }
         .brand-executive { --brand-color: #4338ca; }
-
+ 
         .glow-effect {
             box-shadow: 0 0 20px var(--brand-color, #a61e22);
         }
-
+ 
         input:focus, select:focus, textarea:focus {
             outline: none;
             border-color: #a61e22;
             box-shadow: 0 0 0 3px rgba(166, 30, 34, 0.1);
         }
-
+ 
         .star-pattern {
             background-image: 
                 radial-gradient(circle at 20% 30%, rgba(166, 30, 34, 0.05) 0%, transparent 50%),
@@ -137,10 +137,10 @@
 </head>
 <body>
     <div id="root"></div>
-
+ 
     <script type="text/babel">
         const { useState, useEffect, useRef } = React;
-
+ 
         // Brand Core Data
         const BRAND_CORES = {
             COMMANDER: {
@@ -224,7 +224,7 @@
                 ]
             }
         };
-
+ 
         const POLICY_PRIORITIES = [
             { id: 'border', name: 'Border Security', icon: '🛡️' },
             { id: 'economy', name: 'Economy & Jobs', icon: '💼' },
@@ -242,7 +242,7 @@
             { id: 'infrastructure', name: 'Infrastructure', icon: '🏗️' },
             { id: 'agriculture', name: 'Agriculture', icon: '🌾' }
         ];
-
+ 
         const OFFICES = [
             { id: 'city', name: 'City Council', icon: '🏛️' },
             { id: 'county', name: 'County Office', icon: '🏘️' },
@@ -253,7 +253,7 @@
             { id: 'governor', name: 'Governor', icon: '👑' },
             { id: 'other', name: 'Other', icon: '📋' }
         ];
-
+ 
         const PROFESSIONAL_BACKGROUNDS = [
             { id: 'military', name: 'Military', icon: '🎖️' },
             { id: 'lawenforcement', name: 'Law Enforcement', icon: '👮' },
@@ -267,7 +267,7 @@
             { id: 'bluecollar', name: 'Blue Collar', icon: '🔧' },
             { id: 'tech', name: 'Tech/Engineering', icon: '💻' }
         ];
-
+ 
         function App() {
             const [currentStage, setCurrentStage] = useState(1);
             const [formData, setFormData] = useState({
@@ -307,25 +307,25 @@
                 // Stage 8
                 collateralPriorities: {}
             });
-
+ 
             const updateFormData = (field, value) => {
                 setFormData(prev => ({ ...prev, [field]: value }));
             };
-
+ 
             const nextStage = () => {
                 if (currentStage < 9) {
                     setCurrentStage(prev => prev + 1);
                     window.scrollTo({ top: 0, behavior: 'smooth' });
                 }
             };
-
+ 
             const prevStage = () => {
                 if (currentStage > 1) {
                     setCurrentStage(prev => prev - 1);
                     window.scrollTo({ top: 0, behavior: 'smooth' });
                 }
             };
-
+ 
             const canProceed = () => {
                 switch(currentStage) {
                     case 1:
@@ -342,7 +342,7 @@
                         return true;
                 }
             };
-
+ 
             return (
                 <div className="min-h-screen bg-[#f9f8f6]">
                     {/* Progress Header */}
@@ -363,7 +363,7 @@
                 </div>
             );
         }
-
+ 
         // Progress Header Component
         function ProgressHeader({ currentStage, setCurrentStage }) {
             const stages = [
@@ -377,7 +377,7 @@
                 { num: 8, name: 'Collateral' },
                 { num: 9, name: 'Review' }
             ];
-
+ 
             return (
                 <div className="sticky top-0 z-50 bg-black shadow-lg">
                     <div className="max-w-7xl mx-auto px-4 py-4">
@@ -396,7 +396,7 @@
                                     <p className="text-[#a61e22] text-xs">Brand Discovery Journey</p>
                                 </div>
                             </div>
-
+ 
                             {/* Progress Steps */}
                             <div className="hidden md:flex items-center space-x-2">
                                 {stages.map((stage, idx) => (
@@ -424,7 +424,7 @@
                                     </React.Fragment>
                                 ))}
                             </div>
-
+ 
                             {/* Mobile Progress */}
                             <div className="md:hidden text-white text-sm">
                                 Step {currentStage} of 9
@@ -434,15 +434,15 @@
                 </div>
             );
         }
-
+ 
         // Stage 1: Candidate Basics
         function Stage1({ formData, updateFormData, nextStage, canProceed }) {
             const [animate, setAnimate] = useState(false);
-
+ 
             useEffect(() => {
                 setAnimate(true);
             }, []);
-
+ 
             return (
                 <div className={`space-y-12 ${animate ? 'fade-in-up' : 'opacity-0'}`}>
                     {/* Hero Section */}
@@ -486,7 +486,7 @@
                                 </g>
                             </svg>
                         </div>
-
+ 
                         <h1 className="text-5xl md:text-7xl font-bold text-black tracking-tight" style={{ fontFamily: 'Bebas Neue' }}>
                             BUILD YOUR
                             <span className="block text-[#a61e22] mt-2">CAMPAIGN BRAND</span>
@@ -496,7 +496,7 @@
                             and positions you for victory. Let's begin with the fundamentals.
                         </p>
                     </div>
-
+ 
                     {/* Form Fields */}
                     <div className="max-w-3xl mx-auto space-y-8">
                         {/* Full Name */}
@@ -512,7 +512,7 @@
                                 className="w-full px-6 py-4 bg-white border-2 border-gray-200 rounded-lg text-lg transition-all focus:border-[#a61e22]"
                             />
                         </div>
-
+ 
                         {/* Office Sought */}
                         <div className="slide-in" style={{ animationDelay: '0.1s' }}>
                             <label className="block text-sm font-semibold text-gray-700 mb-3">
@@ -539,7 +539,7 @@
                                 ))}
                             </div>
                         </div>
-
+ 
                         {/* Election Year */}
                         <div className="slide-in" style={{ animationDelay: '0.2s' }}>
                             <label className="block text-sm font-semibold text-gray-700 mb-3">
@@ -566,7 +566,7 @@
                                 ))}
                             </div>
                         </div>
-
+ 
                         {/* Candidate Type */}
                         <div className="slide-in" style={{ animationDelay: '0.3s' }}>
                             <label className="block text-sm font-semibold text-gray-700 mb-3">
@@ -598,7 +598,7 @@
                             </div>
                         </div>
                     </div>
-
+ 
                     {/* Navigation */}
                     <div className="flex justify-end max-w-3xl mx-auto pt-8">
                         <button
@@ -620,7 +620,7 @@
                 </div>
             );
         }
-
+ 
         // Stage 2: Candidate Profile
         function Stage2({ formData, updateFormData, nextStage, prevStage, canProceed }) {
             const toggleBackground = (bgId) => {
@@ -631,7 +631,7 @@
                     updateFormData('backgrounds', [...current, bgId]);
                 }
             };
-
+ 
             const togglePriority = (priorityId) => {
                 const current = formData.policyPriorities || [];
                 if (current.includes(priorityId)) {
@@ -640,7 +640,7 @@
                     updateFormData('policyPriorities', [...current, priorityId]);
                 }
             };
-
+ 
             return (
                 <div className="space-y-12 fade-in-up">
                     <div className="text-center space-y-4">
@@ -651,7 +651,7 @@
                             Your background and priorities shape your brand. Select what defines you.
                         </p>
                     </div>
-
+ 
                     <div className="max-w-4xl mx-auto space-y-10">
                         {/* Professional Background */}
                         <div>
@@ -680,7 +680,7 @@
                                 ))}
                             </div>
                         </div>
-
+ 
                         {/* Policy Priorities */}
                         <div>
                             <label className="block text-sm font-semibold text-gray-700 mb-3">
@@ -710,7 +710,7 @@
                                 ))}
                             </div>
                         </div>
-
+ 
                         {/* Personal Story */}
                         <div>
                             <label className="block text-sm font-semibold text-gray-700 mb-3">
@@ -729,7 +729,7 @@
                             </div>
                         </div>
                     </div>
-
+ 
                     {/* Navigation */}
                     <div className="flex justify-between max-w-4xl mx-auto pt-8">
                         <button
@@ -761,12 +761,12 @@
                 </div>
             );
         }
-
+ 
         // Stage 3: Brand Core Selection (THE CRITICAL MOMENT)
         function Stage3({ formData, updateFormData, nextStage, prevStage }) {
             const [hoveredCore, setHoveredCore] = useState(null);
             const [selectedCore, setSelectedCore] = useState(formData.brandCore);
-
+ 
             const handleCoreSelect = (coreId) => {
                 setSelectedCore(coreId);
                 updateFormData('brandCore', coreId);
@@ -774,7 +774,7 @@
                     nextStage();
                 }, 800);
             };
-
+ 
             return (
                 <div className="space-y-12 fade-in-up">
                     <div className="text-center space-y-6">
@@ -787,7 +787,7 @@
                             messaging strategy, and how voters perceive you. Choose the one that feels like <em>you</em>.
                         </p>
                     </div>
-
+ 
                     {/* Brand Core Cards */}
                     <div className="max-w-6xl mx-auto grid md:grid-cols-2 lg:grid-cols-3 gap-6 px-4">
                         {Object.values(BRAND_CORES).map((core, idx) => (
@@ -818,7 +818,7 @@
                                         color={selectedCore === core.id ? '#ffffff' : core.color}
                                     />
                                 </div>
-
+ 
                                 {/* Content */}
                                 <h3 
                                     className={`text-3xl font-bold mb-2 ${selectedCore === core.id ? 'text-white' : 'text-black'}`}
@@ -829,14 +829,14 @@
                                 <p className={`text-sm font-semibold mb-4 ${selectedCore === core.id ? 'text-white/90' : 'text-gray-600'}`}>
                                     {core.descriptor}
                                 </p>
-
+ 
                                 {/* Expanded Info on Hover */}
                                 <div className={`transition-all duration-300 ${hoveredCore === core.id || selectedCore === core.id ? 'opacity-100 max-h-48' : 'opacity-0 max-h-0 overflow-hidden'}`}>
                                     <p className={`text-sm leading-relaxed ${selectedCore === core.id ? 'text-white/80' : 'text-gray-700'}`}>
                                         {core.positioning}
                                     </p>
                                 </div>
-
+ 
                                 {/* Selection Indicator */}
                                 {selectedCore === core.id && (
                                     <div className="absolute top-4 right-4 w-8 h-8 bg-white rounded-full flex items-center justify-center">
@@ -848,7 +848,7 @@
                             </div>
                         ))}
                     </div>
-
+ 
                     {/* Navigation */}
                     <div className="flex justify-center max-w-6xl mx-auto pt-8">
                         <button
@@ -865,7 +865,7 @@
                 </div>
             );
         }
-
+ 
         // Brand Core Icon Component
         function BrandCoreIcon({ coreId, color }) {
             const icons = {
@@ -920,22 +920,22 @@
                     </svg>
                 )
             };
-
+ 
             return icons[coreId] || null;
         }
-
+ 
         // Stage 4: Sub-Direction Refinement
         function Stage4({ formData, updateFormData, nextStage, prevStage }) {
             const selectedBrandCore = BRAND_CORES[formData.brandCore];
             const [selectedSub, setSelectedSub] = useState(formData.subDirection);
-
+ 
             if (!selectedBrandCore) return null;
-
+ 
             const handleSubSelect = (subId) => {
                 setSelectedSub(subId);
                 updateFormData('subDirection', subId);
             };
-
+ 
             return (
                 <div className="space-y-12 fade-in-up">
                     <div className="text-center space-y-4">
@@ -950,7 +950,7 @@
                             Choose the specific variation that best represents your unique approach within the {selectedBrandCore.name} brand.
                         </p>
                     </div>
-
+ 
                     {/* Sub-Direction Cards */}
                     <div className="max-w-5xl mx-auto grid md:grid-cols-2 gap-6">
                         {selectedBrandCore.subDirections.map((sub, idx) => (
@@ -980,7 +980,7 @@
                                 <p className={`leading-relaxed ${selectedSub === sub.id ? 'text-white/90' : 'text-gray-600'}`}>
                                     {sub.description}
                                 </p>
-
+ 
                                 {selectedSub === sub.id && (
                                     <div className="mt-4 flex items-center text-white text-sm font-semibold">
                                         <svg className="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
@@ -992,7 +992,7 @@
                             </div>
                         ))}
                     </div>
-
+ 
                     {/* Navigation */}
                     <div className="flex justify-between max-w-5xl mx-auto pt-8">
                         <button
@@ -1024,15 +1024,15 @@
                 </div>
             );
         }
-
+ 
         // Stage 5: Color Palette Selection
         function Stage5({ formData, updateFormData, nextStage, prevStage }) {
             const selectedBrandCore = BRAND_CORES[formData.brandCore];
             const [selectedPalette, setSelectedPalette] = useState(formData.colorPalette);
             const [useRecommended, setUseRecommended] = useState(formData.useRecommended);
-
+ 
             if (!selectedBrandCore) return null;
-
+ 
             // Curated color palettes
             const colorPalettes = [
                 {
@@ -1100,21 +1100,21 @@
                     accent: '#fef9c3'
                 }
             ];
-
+ 
             const handlePaletteSelect = (palette) => {
                 setSelectedPalette(palette);
                 setUseRecommended(false);
                 updateFormData('colorPalette', palette);
                 updateFormData('useRecommended', false);
             };
-
+ 
             const handleUseRecommended = () => {
                 setUseRecommended(true);
                 setSelectedPalette(null);
                 updateFormData('useRecommended', true);
                 updateFormData('colorPalette', null);
             };
-
+ 
             const getRecommendedColors = () => {
                 return {
                     primary: selectedBrandCore.color,
@@ -1122,7 +1122,7 @@
                     accent: '#f9f8f6'
                 };
             };
-
+ 
             return (
                 <div className="space-y-12 fade-in-up">
                     <div className="text-center space-y-4">
@@ -1137,7 +1137,7 @@
                             Select colors that will define your campaign's visual identity, or use our recommended palette based on your brand core.
                         </p>
                     </div>
-
+ 
                     <div className="max-w-6xl mx-auto space-y-8">
                         {/* Recommended Option */}
                         <div 
@@ -1180,7 +1180,7 @@
                                 ))}
                             </div>
                         </div>
-
+ 
                         {/* Divider */}
                         <div className="relative">
                             <div className="absolute inset-0 flex items-center">
@@ -1192,7 +1192,7 @@
                                 </span>
                             </div>
                         </div>
-
+ 
                         {/* Color Palette Grid */}
                         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
                             {colorPalettes.map((palette, idx) => (
@@ -1224,7 +1224,7 @@
                                             style={{ backgroundColor: palette.accent }}
                                         ></div>
                                     </div>
-
+ 
                                     {/* Palette Info */}
                                     <div className="p-4 bg-white">
                                         <h4 className="font-bold text-gray-900 mb-1">{palette.name}</h4>
@@ -1245,7 +1245,7 @@
                                                 <span className="font-mono text-gray-700">{palette.accent}</span>
                                             </div>
                                         </div>
-
+ 
                                         {selectedPalette?.id === palette.id && !useRecommended && (
                                             <div className="mt-3 flex items-center text-[#a61e22] text-sm font-semibold">
                                                 <svg className="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
@@ -1259,7 +1259,7 @@
                             ))}
                         </div>
                     </div>
-
+ 
                     {/* Navigation */}
                     <div className="flex justify-between max-w-6xl mx-auto pt-8">
                         <button
@@ -1286,13 +1286,13 @@
                 </div>
             );
         }
-
+ 
         // Stage 6: Visual Identity Preview (formerly Stage 5)
         function Stage6({ formData, updateFormData, nextStage, prevStage }) {
             const selectedBrandCore = BRAND_CORES[formData.brandCore];
             
             if (!selectedBrandCore) return null;
-
+ 
             // Get the color palette to display
             const getColors = () => {
                 if (formData.useRecommended || !formData.colorPalette) {
@@ -1304,10 +1304,10 @@
                 }
                 return formData.colorPalette;
             };
-
+ 
             const colors = getColors();
             const logoTypes = ['Wordmark', 'Badge/Emblem', 'Symbol+Text', 'Monogram', 'Campaign Sign'];
-
+ 
             return (
                 <div className="space-y-12 fade-in-up">
                     <div className="text-center space-y-4">
@@ -1318,7 +1318,7 @@
                             Here's how your brand comes to life visually. This is your identity.
                         </p>
                     </div>
-
+ 
                     <div className="max-w-6xl mx-auto space-y-8">
                         {/* Color Palette */}
                         <div className="bg-white p-8 rounded-2xl shadow-lg">
@@ -1358,7 +1358,7 @@
                                 </div>
                             </div>
                         </div>
-
+ 
                         {/* Typography */}
                         <div className="bg-white p-8 rounded-2xl shadow-lg">
                             <h3 className="text-2xl font-bold mb-6" style={{ fontFamily: selectedBrandCore.fontPrimary }}>
@@ -1388,7 +1388,7 @@
                                 </div>
                             </div>
                         </div>
-
+ 
                         {/* Logo Variations */}
                         <div className="bg-white p-8 rounded-2xl shadow-lg">
                             <h3 className="text-2xl font-bold mb-6" style={{ fontFamily: selectedBrandCore.fontPrimary }}>
@@ -1414,7 +1414,7 @@
                             </div>
                         </div>
                     </div>
-
+ 
                     {/* Navigation */}
                     <div className="flex justify-between max-w-6xl mx-auto pt-8">
                         <button
@@ -1441,14 +1441,14 @@
                 </div>
             );
         }
-
+ 
         // Stage 7: Website Copy Direction (formerly Stage 6)
         function Stage7({ formData, updateFormData, nextStage, prevStage }) {
             const selectedBrandCore = BRAND_CORES[formData.brandCore];
             const [expandedSection, setExpandedSection] = useState(null);
-
+ 
             if (!selectedBrandCore) return null;
-
+ 
             const sections = [
                 { id: 'hero', name: 'Hero Section', sample: `${formData.fullName || 'Your Name'} for ${OFFICES.find(o => o.id === formData.office)?.name || 'Office'}` },
                 { id: 'about', name: 'About/Bio', sample: 'Your story, your values, your commitment to serve.' },
@@ -1457,7 +1457,7 @@
                 { id: 'donate', name: 'Donate CTA', sample: 'Fuel this campaign. Every dollar counts.' },
                 { id: 'contact', name: 'Contact', sample: 'Get in touch. Stay informed.' }
             ];
-
+ 
             return (
                 <div className="space-y-12 fade-in-up">
                     <div className="text-center space-y-4">
@@ -1468,7 +1468,7 @@
                             Strategic messaging for each section of your campaign website.
                         </p>
                     </div>
-
+ 
                     <div className="max-w-4xl mx-auto space-y-4">
                         {sections.map((section, idx) => (
                             <div 
@@ -1502,7 +1502,7 @@
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                                     </svg>
                                 </button>
-
+ 
                                 {expandedSection === section.id && (
                                     <div className="px-8 pb-6 border-t border-gray-100">
                                         <div className="pt-6 space-y-4">
@@ -1534,7 +1534,7 @@
                             </div>
                         ))}
                     </div>
-
+ 
                     {/* Navigation */}
                     <div className="flex justify-between max-w-4xl mx-auto pt-8">
                         <button
@@ -1561,7 +1561,7 @@
                 </div>
             );
         }
-
+ 
         // Stage 8: Collateral Priority (formerly Stage 7)
         function Stage8({ formData, updateFormData, nextStage, prevStage }) {
             const collateralItems = [
@@ -1578,14 +1578,14 @@
                 { id: 'letterhead', name: 'Letterhead', priority: 'LOW', icon: '📄' },
                 { id: 'website', name: 'Website', priority: 'CRITICAL', icon: '🌐' }
             ];
-
+ 
             const priorityColors = {
                 'CRITICAL': '#a61e22',
                 'HIGH': '#ea580c',
                 'MEDIUM': '#059669',
                 'LOW': '#6b7280'
             };
-
+ 
             return (
                 <div className="space-y-12 fade-in-up">
                     <div className="text-center space-y-4">
@@ -1596,7 +1596,7 @@
                             Based on your office and strategy, here are your priority materials.
                         </p>
                     </div>
-
+ 
                     <div className="max-w-5xl mx-auto">
                         {/* Priority Legend */}
                         <div className="flex justify-center space-x-6 mb-8">
@@ -1610,7 +1610,7 @@
                                 </div>
                             ))}
                         </div>
-
+ 
                         {/* Collateral Grid */}
                         <div className="grid md:grid-cols-3 gap-6">
                             {collateralItems.map((item, idx) => (
@@ -1636,7 +1636,7 @@
                             ))}
                         </div>
                     </div>
-
+ 
                     {/* Navigation */}
                     <div className="flex justify-between max-w-5xl mx-auto pt-8">
                         <button
@@ -1663,18 +1663,18 @@
                 </div>
             );
         }
-
+ 
         // Stage 9: Final Review & Export (formerly Stage 8)
         function Stage9({ formData, prevStage }) {
             const [showConfetti, setShowConfetti] = useState(false);
             const selectedBrandCore = BRAND_CORES[formData.brandCore];
-
+ 
             useEffect(() => {
                 setShowConfetti(true);
                 const timer = setTimeout(() => setShowConfetti(false), 3000);
                 return () => clearTimeout(timer);
             }, []);
-
+ 
             const handleDownload = (type) => {
                 const data = JSON.stringify(formData, null, 2);
                 const blob = new Blob([data], { type: 'application/json' });
@@ -1684,7 +1684,7 @@
                 a.download = `${formData.fullName.replace(/\s+/g, '-')}-brand-profile.json`;
                 a.click();
             };
-
+ 
             return (
                 <div className="space-y-12 fade-in-up">
                     {/* Confetti Effect */}
@@ -1703,7 +1703,7 @@
                             ))}
                         </div>
                     )}
-
+ 
                     {/* Success Message */}
                     <div className="text-center space-y-6">
                         <div className="w-24 h-24 bg-[#059669] rounded-full flex items-center justify-center mx-auto mb-6">
@@ -1720,7 +1720,7 @@
                             every aspect of your campaign. Here's your complete brand profile.
                         </p>
                     </div>
-
+ 
                     {/* Summary Cards */}
                     <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-6">
                         {/* Candidate Info */}
@@ -1737,7 +1737,7 @@
                                 <div><strong>Backgrounds:</strong> {formData.backgrounds.map(b => PROFESSIONAL_BACKGROUNDS.find(bg => bg.id === b)?.name).join(', ')}</div>
                             </div>
                         </div>
-
+ 
                         {/* Brand Identity */}
                         <div className="bg-white p-8 rounded-2xl shadow-lg">
                             <h3 className="text-2xl font-bold mb-6 flex items-center">
@@ -1758,7 +1758,7 @@
                                 </div>
                             </div>
                         </div>
-
+ 
                         {/* Policy Priorities */}
                         <div className="bg-white p-8 rounded-2xl shadow-lg">
                             <h3 className="text-2xl font-bold mb-6 flex items-center">
@@ -1774,7 +1774,7 @@
                                 ))}
                             </div>
                         </div>
-
+ 
                         {/* Next Steps */}
                         <div className="bg-gradient-to-br from-[#a61e22] to-[#8a1a1d] p-8 rounded-2xl shadow-lg text-white">
                             <h3 className="text-2xl font-bold mb-6 flex items-center">
@@ -1801,7 +1801,7 @@
                             </ul>
                         </div>
                     </div>
-
+ 
                     {/* Download Buttons */}
                     <div className="max-w-4xl mx-auto flex flex-col md:flex-row gap-4 justify-center">
                         <button
@@ -1825,7 +1825,7 @@
                             🖨️ Print Summary
                         </button>
                     </div>
-
+ 
                     {/* Back Button */}
                     <div className="flex justify-center pt-8">
                         <button
@@ -1842,7 +1842,7 @@
                 </div>
             );
         }
-
+ 
         // Render App
         ReactDOM.render(<App />, document.getElementById('root'));
     </script>
